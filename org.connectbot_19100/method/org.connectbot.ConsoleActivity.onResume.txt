@@ -1,0 +1,13 @@
+    public void onResume() {
+        super.onResume();
+        Log.d("CB.ConsoleActivity", "onResume called");
+        if (this.prefs.getBoolean("keepalive", true)) {
+            getWindow().addFlags(128);
+        } else {
+            getWindow().clearFlags(128);
+        }
+        configureOrientation();
+        if (this.forcedOrientation && this.bound != null) {
+            this.bound.setResizeAllowed(true);
+        }
+    }

@@ -1,0 +1,13 @@
+    public boolean onUnbind(Intent intent) {
+        Log.i("CB.TerminalManager", "Someone unbound from TerminalManager with " + this.bridges.size() + " bridges active");
+        setResizeAllowed(true);
+        if (this.bridges.size() == 0) {
+            stopWithDelay();
+        } else {
+            Iterator it = this.bridges.iterator();
+            while (it.hasNext()) {
+                ((TerminalBridge) it.next()).promptHelper.setHandler(null);
+            }
+        }
+        return true;
+    }

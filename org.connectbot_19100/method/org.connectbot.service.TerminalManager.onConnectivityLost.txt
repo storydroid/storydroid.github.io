@@ -1,0 +1,9 @@
+    public void onConnectivityLost() {
+        Thread t = new Thread() {
+            public void run() {
+                TerminalManager.this.disconnectAll(false, true);
+            }
+        };
+        t.setName("Disconnector");
+        t.start();
+    }

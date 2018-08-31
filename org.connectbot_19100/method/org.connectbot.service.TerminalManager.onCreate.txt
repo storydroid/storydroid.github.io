@@ -1,0 +1,30 @@
+    public void onCreate() {
+        boolean z;
+        Log.i("CB.TerminalManager", "Starting service");
+        this.prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        this.prefs.registerOnSharedPreferenceChangeListener(this);
+        this.res = getResources();
+        this.pubkeyTimer = new Timer("pubkeyTimer", true);
+        this.hostdb = HostDatabase.get(this);
+        this.colordb = HostDatabase.get(this);
+        this.pubkeydb = PubkeyDatabase.get(this);
+        updateSavingKeys();
+        for (PubkeyBean pubkey : this.pubkeydb.getAllStartPubkeys()) {
+            try {
+                addKey(pubkey, new KeyPair(PubkeyUtils.decodePublic(pubkey.getPublicKey(), pubkey.getType()), PubkeyUtils.decodePrivate(pubkey.getPrivateKey(), pubkey.getType())));
+            } catch (Exception e) {
+                Log.d("CB.TerminalManager", String.format("Problem adding key '%s' to in-memory cache", new Object[]{pubkey.getNickname()}), e);
+            }
+        }
+        this.vibrator = (Vibrator) getSystemService("vibrator");
+        this.wantKeyVibration = this.prefs.getBoolean("bumpyarrows", true);
+        this.wantBellVibration = this.prefs.getBoolean("bellVibrate", true);
+        enableMediaPlayer();
+        if (this.res.getConfiguration().hardKeyboardHidden == 2) {
+            z = true;
+        } else {
+            z = false;
+        }
+        this.hardKeyboardHidden = z;
+        this.connectivityManager = new ConnectivityReceiver(this, this.prefs.getBoolean("wifilock", true));
+    }

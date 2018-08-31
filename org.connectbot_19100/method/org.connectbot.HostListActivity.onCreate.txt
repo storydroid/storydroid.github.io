@@ -1,0 +1,53 @@
+    public void onCreate(Bundle icicle) {
+        boolean z;
+        int i = 0;
+        super.onCreate(icicle);
+        setContentView((int) R.layout.act_hostlist);
+        setTitle(R.string.title_hosts_list);
+        this.mListView = (RecyclerView) findViewById(R.id.list);
+        this.mListView.setHasFixedSize(true);
+        this.mListView.setLayoutManager(new LinearLayoutManager(this));
+        this.mListView.addItemDecoration(new ListItemDecoration(this));
+        this.mEmptyView = findViewById(R.id.empty);
+        this.prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        if (Build.MANUFACTURER.equals("HTC") && Build.DEVICE.equals("dream")) {
+            Editor editor = this.prefs.edit();
+            boolean doCommit = false;
+            if (!(this.prefs.contains("shiftfkeys") || this.prefs.contains("ctrlfkeys"))) {
+                editor.putBoolean("shiftfkeys", true);
+                editor.putBoolean("ctrlfkeys", true);
+                doCommit = true;
+            }
+            if (!this.prefs.contains("stickymodifiers")) {
+                editor.putString("stickymodifiers", "yes");
+                doCommit = true;
+            }
+            if (!this.prefs.contains("keymode")) {
+                editor.putString("keymode", "Use right-side keys");
+                doCommit = true;
+            }
+            if (doCommit) {
+                editor.commit();
+            }
+        }
+        if ("android.intent.action.CREATE_SHORTCUT".equals(getIntent().getAction()) || "android.intent.action.PICK".equals(getIntent().getAction())) {
+            z = true;
+        } else {
+            z = false;
+        }
+        this.makingShortcut = z;
+        this.hostdb = HostDatabase.get(this);
+        this.sortedByColor = this.prefs.getBoolean("sortByColor", false);
+        registerForContextMenu(this.mListView);
+        FloatingActionButton addHostButton = (FloatingActionButton) findViewById(R.id.add_host_button);
+        if (this.makingShortcut) {
+            i = 8;
+        }
+        addHostButton.setVisibility(i);
+        addHostButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                HostListActivity.this.startActivityForResult(EditHostActivity.createIntentForNewHost(HostListActivity.this), 1);
+            }
+        });
+        this.inflater = LayoutInflater.from(this);
+    }

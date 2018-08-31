@@ -1,0 +1,7 @@
+    public static KeyPair recoverKeyPair(byte[] encoded) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        String algo = getAlgorithmForOid(getOidFromPkcs8Encoded(encoded));
+        KeySpec privKeySpec = new PKCS8EncodedKeySpec(encoded);
+        KeyFactory kf = KeyFactory.getInstance(algo);
+        PrivateKey priv = kf.generatePrivate(privKeySpec);
+        return new KeyPair(recoverPublicKey(kf, priv), priv);
+    }

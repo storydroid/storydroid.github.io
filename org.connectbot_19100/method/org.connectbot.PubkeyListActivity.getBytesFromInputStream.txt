@@ -1,0 +1,15 @@
+    public static byte[] getBytesFromInputStream(InputStream is, int maxSize) throws IOException {
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        byte[] buffer = new byte[65535];
+        while (true) {
+            int len = is.read(buffer);
+            if (len != -1 && os.size() < maxSize) {
+                os.write(buffer, 0, len);
+            }
+        }
+        if (os.size() >= maxSize) {
+            throw new IOException("File was too big");
+        }
+        os.flush();
+        return os.toByteArray();
+    }

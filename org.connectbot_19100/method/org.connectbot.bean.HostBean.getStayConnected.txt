@@ -1,0 +1,3 @@
+    public boolean getStayConnected() {
+        return this.stayConnected;
+    }

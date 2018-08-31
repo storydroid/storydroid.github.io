@@ -1,0 +1,9 @@
+        public void onClick(View v) {
+            boolean loaded = PubkeyListActivity.this.bound != null && PubkeyListActivity.this.bound.isKeyLoaded(this.pubkey.getNickname());
+            if (loaded) {
+                PubkeyListActivity.this.bound.removeKey(this.pubkey.getNickname());
+                PubkeyListActivity.this.updateList();
+                return;
+            }
+            PubkeyListActivity.this.handleAddKey(this.pubkey);
+        }

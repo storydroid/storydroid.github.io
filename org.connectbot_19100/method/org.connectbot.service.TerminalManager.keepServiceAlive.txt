@@ -1,0 +1,4 @@
+    private void keepServiceAlive() {
+        stopIdleTimer();
+        startService(new Intent(this, TerminalManager.class));
+    }

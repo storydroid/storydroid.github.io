@@ -1,0 +1,27 @@
+    public String toString() {
+        if (this.protocol == null) {
+            return "";
+        }
+        int defaultPort = TransportFactory.getTransport(this.protocol).getDefaultPort();
+        if (SSH.getProtocolName().equals(this.protocol)) {
+            if (this.username == null || this.hostname == null || this.username.equals("") || this.hostname.equals("")) {
+                return "";
+            }
+            if (this.port == defaultPort) {
+                return this.username + "@" + this.hostname;
+            }
+            return this.username + "@" + this.hostname + ":" + this.port;
+        } else if (Telnet.getProtocolName().equals(this.protocol)) {
+            if (this.hostname == null || this.hostname.equals("")) {
+                return "";
+            }
+            if (this.port == defaultPort) {
+                return this.hostname;
+            }
+            return this.hostname + ":" + this.port;
+        } else if (Local.getProtocolName().equals(this.protocol)) {
+            return this.nickname;
+        } else {
+            return "";
+        }
+    }

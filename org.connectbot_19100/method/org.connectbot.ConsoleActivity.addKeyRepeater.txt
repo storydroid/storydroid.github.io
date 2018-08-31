@@ -1,0 +1,5 @@
+    private void addKeyRepeater(View view) {
+        KeyRepeater keyRepeater = new KeyRepeater(this.keyRepeatHandler, view);
+        view.setOnClickListener(keyRepeater);
+        view.setOnTouchListener(keyRepeater);
+    }

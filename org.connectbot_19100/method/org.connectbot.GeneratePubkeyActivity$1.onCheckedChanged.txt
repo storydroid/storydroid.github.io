@@ -1,0 +1,11 @@
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.rsa) {
+                    GeneratePubkeyActivity.this.setKeyType(KeyType.RSA);
+                } else if (checkedId == R.id.dsa) {
+                    GeneratePubkeyActivity.this.setKeyType(KeyType.DSA);
+                } else if (checkedId == R.id.ec) {
+                    GeneratePubkeyActivity.this.setKeyType(KeyType.EC);
+                } else if (checkedId == R.id.ed25519) {
+                    GeneratePubkeyActivity.this.setKeyType(KeyType.ED25519);
+                }
+            }

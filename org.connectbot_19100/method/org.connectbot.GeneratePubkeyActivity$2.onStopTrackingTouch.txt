@@ -1,0 +1,3 @@
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                GeneratePubkeyActivity.this.setBits(GeneratePubkeyActivity.this.bits);
+            }

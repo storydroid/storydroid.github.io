@@ -1,0 +1,16 @@
+        public void onClick(View v) {
+            Intent contents = new Intent("android.intent.action.VIEW", this.host.getUri());
+            contents.setFlags(67108864);
+            if (HostListActivity.this.makingShortcut) {
+                ShortcutIconResource icon = ShortcutIconResource.fromContext(HostListActivity.this, R.drawable.icon);
+                Intent intent = new Intent();
+                intent.putExtra("android.intent.extra.shortcut.INTENT", contents);
+                intent.putExtra("android.intent.extra.shortcut.NAME", this.host.getNickname());
+                intent.putExtra("android.intent.extra.shortcut.ICON_RESOURCE", icon);
+                HostListActivity.this.setResult(-1, intent);
+                HostListActivity.this.finish();
+                return;
+            }
+            contents.setClass(HostListActivity.this, ConsoleActivity.class);
+            HostListActivity.this.startActivity(contents);
+        }

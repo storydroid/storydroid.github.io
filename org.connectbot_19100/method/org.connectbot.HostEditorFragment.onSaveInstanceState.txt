@@ -1,0 +1,9 @@
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putLong("existingHostId", this.mHost.getId());
+        savedInstanceState.putParcelable("existingHost", this.mHost.getValues());
+        savedInstanceState.putBoolean("isExpanded", this.mIsUriEditorExpanded);
+        savedInstanceState.putString("quickConnectString", this.mQuickConnectField.getText().toString());
+        savedInstanceState.putStringArrayList("pubkeyNames", this.mPubkeyNames);
+        savedInstanceState.putStringArrayList("pubkeyValues", this.mPubkeyValues);
+    }

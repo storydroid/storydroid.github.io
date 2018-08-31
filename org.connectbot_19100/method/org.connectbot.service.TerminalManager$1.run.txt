@@ -1,0 +1,4 @@
+        public void run() {
+            Log.d("CB.TerminalManager", String.format("Stopping service after timeout of ~%d seconds", new Object[]{Long.valueOf(300)}));
+            TerminalManager.this.stopNow();
+        }

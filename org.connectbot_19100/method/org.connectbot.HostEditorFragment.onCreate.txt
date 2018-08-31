@@ -1,0 +1,19 @@
+    public void onCreate(Bundle savedInstanceState) {
+        Bundle bundle;
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState == null) {
+            bundle = getArguments();
+        } else {
+            bundle = savedInstanceState;
+        }
+        Parcelable existingHostParcelable = bundle.getParcelable("existingHost");
+        if (existingHostParcelable != null) {
+            this.mHost = HostBean.fromContentValues((ContentValues) existingHostParcelable);
+            this.mHost.setId(bundle.getLong("existingHostId"));
+        } else {
+            this.mHost = new HostBean();
+        }
+        this.mPubkeyNames = bundle.getStringArrayList("pubkeyNames");
+        this.mPubkeyValues = bundle.getStringArrayList("pubkeyValues");
+        this.mIsUriEditorExpanded = bundle.getBoolean("isExpanded");
+    }

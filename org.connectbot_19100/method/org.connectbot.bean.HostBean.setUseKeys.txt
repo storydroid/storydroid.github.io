@@ -1,0 +1,3 @@
+    public void setUseKeys(boolean useKeys) {
+        this.useKeys = useKeys;
+    }

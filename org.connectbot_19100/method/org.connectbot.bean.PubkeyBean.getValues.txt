@@ -1,0 +1,24 @@
+    public ContentValues getValues() {
+        int i;
+        int i2 = 1;
+        ContentValues values = new ContentValues();
+        values.put("nickname", this.nickname);
+        values.put("type", this.type);
+        values.put("private", this.privateKey);
+        values.put("public", this.publicKey);
+        values.put("encrypted", Integer.valueOf(this.encrypted ? 1 : 0));
+        String str = "startup";
+        if (this.startup) {
+            i = 1;
+        } else {
+            i = 0;
+        }
+        values.put(str, Integer.valueOf(i));
+        String str2 = "confirmuse";
+        if (!this.confirmUse) {
+            i2 = 0;
+        }
+        values.put(str2, Integer.valueOf(i2));
+        values.put("lifetime", Integer.valueOf(this.lifetime));
+        return values;
+    }

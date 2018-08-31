@@ -1,0 +1,10 @@
+    private void handleHostChange() {
+        String quickConnectString = this.mQuickConnectField.getText().toString();
+        if (quickConnectString == null || quickConnectString.equals("")) {
+            this.mListener.onHostInvalidated();
+        } else if (TransportFactory.getUri(this.mHost.getProtocol(), quickConnectString) == null) {
+            this.mListener.onHostInvalidated();
+        } else {
+            this.mListener.onValidHostConfigured(this.mHost);
+        }
+    }

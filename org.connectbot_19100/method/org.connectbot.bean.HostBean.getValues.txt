@@ -1,0 +1,22 @@
+    public ContentValues getValues() {
+        ContentValues values = new ContentValues();
+        values.put("nickname", this.nickname);
+        values.put("protocol", this.protocol);
+        values.put("username", this.username);
+        values.put("hostname", this.hostname);
+        values.put("port", Integer.valueOf(this.port));
+        values.put("lastconnect", Long.valueOf(this.lastConnect));
+        values.put("color", this.color);
+        values.put("usekeys", Boolean.toString(this.useKeys));
+        values.put("useauthagent", this.useAuthAgent);
+        values.put("postlogin", this.postLogin);
+        values.put("pubkeyid", Long.valueOf(this.pubkeyId));
+        values.put("wantsession", Boolean.toString(this.wantSession));
+        values.put("delkey", this.delKey);
+        values.put("fontsize", Integer.valueOf(this.fontSize));
+        values.put("compression", Boolean.toString(this.compression));
+        values.put("encoding", this.encoding);
+        values.put("stayconnected", Boolean.toString(this.stayConnected));
+        values.put("quickdisconnect", Boolean.toString(this.quickDisconnect));
+        return values;
+    }

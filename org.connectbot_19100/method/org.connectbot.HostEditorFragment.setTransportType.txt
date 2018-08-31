@@ -1,0 +1,26 @@
+    private void setTransportType(String protocol, boolean setDefaultPortInModel) {
+        this.mHost.setProtocol(protocol);
+        if (setDefaultPortInModel) {
+            this.mHost.setPort(TransportFactory.getTransport(protocol).getDefaultPort());
+        }
+        handleHostChange();
+        this.mTransportText.setText(protocol);
+        this.mQuickConnectContainer.setHint(TransportFactory.getFormatHint(protocol, getActivity()));
+        if (SSH.getProtocolName().equals(protocol)) {
+            this.mUsernameContainer.setVisibility(0);
+            this.mHostnameContainer.setVisibility(0);
+            this.mPortContainer.setVisibility(0);
+            this.mExpandCollapseButton.setVisibility(0);
+            this.mNicknameItem.setVisibility(0);
+        } else if (Telnet.getProtocolName().equals(protocol)) {
+            this.mUsernameContainer.setVisibility(8);
+            this.mHostnameContainer.setVisibility(0);
+            this.mPortContainer.setVisibility(0);
+            this.mExpandCollapseButton.setVisibility(0);
+            this.mNicknameItem.setVisibility(0);
+        } else {
+            setUriPartsContainerExpanded(false);
+            this.mExpandCollapseButton.setVisibility(8);
+            this.mNicknameItem.setVisibility(8);
+        }
+    }

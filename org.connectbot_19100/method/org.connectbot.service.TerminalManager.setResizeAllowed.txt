@@ -1,0 +1,9 @@
+        setResizeAllowed(true);
+        if (this.bridges.size() == 0) {
+            stopWithDelay();
+        } else {
+            Iterator it = this.bridges.iterator();
+            while (it.hasNext()) {
+                ((TerminalBridge) it.next()).promptHelper.setHandler(null);
+            }
+        }

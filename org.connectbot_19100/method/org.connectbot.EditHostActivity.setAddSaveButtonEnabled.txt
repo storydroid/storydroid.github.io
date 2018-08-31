@@ -1,0 +1,4 @@
+    private void setAddSaveButtonEnabled(boolean enabled) {
+        this.mSaveHostButton.setEnabled(enabled);
+        this.mSaveHostButton.getIcon().setAlpha(enabled ? 255 : 130);
+    }

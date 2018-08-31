@@ -1,0 +1,6 @@
+    private String convertAlgorithmName(String algorithm) {
+        if ("EdDSA".equals(algorithm)) {
+            return "ED25519";
+        }
+        return algorithm;
+    }

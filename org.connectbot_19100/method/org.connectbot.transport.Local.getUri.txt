@@ -1,0 +1,7 @@
+    public static Uri getUri(String input) {
+        Uri uri = Uri.parse("local:#Local");
+        if (input == null || input.length() <= 0) {
+            return uri;
+        }
+        return uri.buildUpon().fragment(input).build();
+    }

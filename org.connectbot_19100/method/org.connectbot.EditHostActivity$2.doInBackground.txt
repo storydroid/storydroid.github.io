@@ -1,0 +1,4 @@
+                protected Void doInBackground(Void... unused) {
+                    CharsetHolder.initialize();
+                    return null;
+                }

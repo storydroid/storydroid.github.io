@@ -1,0 +1,21 @@
+    public boolean savePortForward(PortForwardBean pfb) {
+        this.mDb.beginTransaction();
+        try {
+            if (pfb.getId() < 0) {
+                long addedId = this.mDb.insert("portforwards", null, pfb.getValues());
+                if (addedId == -1) {
+                    return false;
+                }
+                pfb.setId(addedId);
+            } else {
+                if (this.mDb.update("portforwards", pfb.getValues(), "_id = ?", new String[]{String.valueOf(pfb.getId())}) <= 0) {
+                    this.mDb.endTransaction();
+                    return false;
+                }
+            }
+            this.mDb.setTransactionSuccessful();
+            this.mDb.endTransaction();
+            return true;
+        } finally {
+            this.mDb.endTransaction();
+        }

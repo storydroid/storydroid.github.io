@@ -1,0 +1,2 @@
+                addKey(pubkey, new KeyPair(PubkeyUtils.decodePublic(pubkey.getPublicKey(), pubkey.getType()), PubkeyUtils.decodePrivate(pubkey.getPrivateKey(), pubkey.getType())));
+            } catch (Exception e) {

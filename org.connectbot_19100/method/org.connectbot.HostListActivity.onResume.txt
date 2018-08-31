@@ -1,0 +1,9 @@
+    public void onResume() {
+        super.onResume();
+        if ((getIntent().getFlags() & 1048576) == 0 && "org.connectbot.action.DISCONNECT".equals(getIntent().getAction())) {
+            Log.d("CB.HostListActivity", "Got disconnect all request");
+            disconnectAll();
+        }
+        boolean z = this.waitingForDisconnectAll && this.closeOnDisconnectAll;
+        this.closeOnDisconnectAll = z;
+    }

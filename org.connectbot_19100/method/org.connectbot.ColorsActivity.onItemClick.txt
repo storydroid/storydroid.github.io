@@ -1,0 +1,3 @@
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+        editColor(position);
+    }

@@ -1,0 +1,12 @@
+    private void setBits(int newBits) {
+        if (newBits < this.keyType.minimumBits || newBits > this.keyType.maximumBits) {
+            newBits = this.keyType.defaultBits;
+        }
+        if (this.keyType == KeyType.EC) {
+            this.bits = getClosestFieldSize(newBits);
+        } else {
+            this.bits = newBits - (newBits % 8);
+        }
+        this.bitsSlider.setProgress(newBits - this.keyType.minimumBits);
+        this.bitsText.setText(String.valueOf(this.bits));
+    }

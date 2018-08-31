@@ -1,0 +1,46 @@
+    private List<HostBean> createHostBeans(Cursor c) {
+        List<HostBean> hosts = new LinkedList();
+        int COL_ID = c.getColumnIndexOrThrow("_id");
+        int COL_NICKNAME = c.getColumnIndexOrThrow("nickname");
+        int COL_PROTOCOL = c.getColumnIndexOrThrow("protocol");
+        int COL_USERNAME = c.getColumnIndexOrThrow("username");
+        int COL_HOSTNAME = c.getColumnIndexOrThrow("hostname");
+        int COL_PORT = c.getColumnIndexOrThrow("port");
+        int COL_LASTCONNECT = c.getColumnIndexOrThrow("lastconnect");
+        int COL_COLOR = c.getColumnIndexOrThrow("color");
+        int COL_USEKEYS = c.getColumnIndexOrThrow("usekeys");
+        int COL_USEAUTHAGENT = c.getColumnIndexOrThrow("useauthagent");
+        int COL_POSTLOGIN = c.getColumnIndexOrThrow("postlogin");
+        int COL_PUBKEYID = c.getColumnIndexOrThrow("pubkeyid");
+        int COL_WANTSESSION = c.getColumnIndexOrThrow("wantsession");
+        int COL_DELKEY = c.getColumnIndexOrThrow("delkey");
+        int COL_FONTSIZE = c.getColumnIndexOrThrow("fontsize");
+        int COL_COMPRESSION = c.getColumnIndexOrThrow("compression");
+        int COL_ENCODING = c.getColumnIndexOrThrow("encoding");
+        int COL_STAYCONNECTED = c.getColumnIndexOrThrow("stayconnected");
+        int COL_QUICKDISCONNECT = c.getColumnIndexOrThrow("quickdisconnect");
+        while (c.moveToNext()) {
+            HostBean host = new HostBean();
+            host.setId(c.getLong(COL_ID));
+            host.setNickname(c.getString(COL_NICKNAME));
+            host.setProtocol(c.getString(COL_PROTOCOL));
+            host.setUsername(c.getString(COL_USERNAME));
+            host.setHostname(c.getString(COL_HOSTNAME));
+            host.setPort(c.getInt(COL_PORT));
+            host.setLastConnect(c.getLong(COL_LASTCONNECT));
+            host.setColor(c.getString(COL_COLOR));
+            host.setUseKeys(Boolean.valueOf(c.getString(COL_USEKEYS)).booleanValue());
+            host.setUseAuthAgent(c.getString(COL_USEAUTHAGENT));
+            host.setPostLogin(c.getString(COL_POSTLOGIN));
+            host.setPubkeyId(c.getLong(COL_PUBKEYID));
+            host.setWantSession(Boolean.valueOf(c.getString(COL_WANTSESSION)).booleanValue());
+            host.setDelKey(c.getString(COL_DELKEY));
+            host.setFontSize(c.getInt(COL_FONTSIZE));
+            host.setCompression(Boolean.valueOf(c.getString(COL_COMPRESSION)).booleanValue());
+            host.setEncoding(c.getString(COL_ENCODING));
+            host.setStayConnected(Boolean.valueOf(c.getString(COL_STAYCONNECTED)).booleanValue());
+            host.setQuickDisconnect(Boolean.valueOf(c.getString(COL_QUICKDISCONNECT)).booleanValue());
+            hosts.add(host);
+        }
+        return hosts;
+    }

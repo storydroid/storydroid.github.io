@@ -1,0 +1,4 @@
+    protected void onStop() {
+        super.onStop();
+        getDelegate().onStop();
+    }

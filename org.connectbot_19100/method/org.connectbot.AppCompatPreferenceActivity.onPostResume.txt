@@ -1,0 +1,4 @@
+    protected void onPostResume() {
+        super.onPostResume();
+        getDelegate().onPostResume();
+    }

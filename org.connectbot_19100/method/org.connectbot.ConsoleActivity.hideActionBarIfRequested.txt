@@ -1,0 +1,5 @@
+    private void hideActionBarIfRequested() {
+        if (this.titleBarHide && this.actionBar != null) {
+            this.actionBar.hide();
+        }
+    }

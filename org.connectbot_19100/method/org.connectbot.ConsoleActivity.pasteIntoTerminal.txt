@@ -1,0 +1,8 @@
+    private void pasteIntoTerminal() {
+        TerminalBridge bridge = this.adapter.getCurrentTerminalView().bridge;
+        String clip = "";
+        if (this.clipboard.hasText()) {
+            clip = this.clipboard.getText().toString();
+        }
+        bridge.injectString(clip);
+    }

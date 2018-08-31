@@ -1,0 +1,3 @@
+    public void setWantSession(boolean wantSession) {
+        this.wantSession = wantSession;
+    }

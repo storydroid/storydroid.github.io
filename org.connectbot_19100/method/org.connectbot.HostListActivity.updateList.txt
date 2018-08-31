@@ -1,0 +1,23 @@
+    protected void updateList() {
+        if (this.prefs.getBoolean("sortByColor", false) != this.sortedByColor) {
+            Editor edit = this.prefs.edit();
+            edit.putBoolean("sortByColor", this.sortedByColor);
+            edit.commit();
+        }
+        if (this.hostdb == null) {
+            this.hostdb = HostDatabase.get(this);
+        }
+        this.hosts = this.hostdb.getHosts(this.sortedByColor);
+        if (this.bound != null) {
+            Iterator it = this.bound.getBridges().iterator();
+            while (it.hasNext()) {
+                TerminalBridge bridge = (TerminalBridge) it.next();
+                if (!this.hosts.contains(bridge.host)) {
+                    this.hosts.add(0, bridge.host);
+                }
+            }
+        }
+        this.mAdapter = new HostAdapter(this, this.hosts, this.bound);
+        this.mListView.setAdapter(this.mAdapter);
+        adjustViewVisibility();
+    }

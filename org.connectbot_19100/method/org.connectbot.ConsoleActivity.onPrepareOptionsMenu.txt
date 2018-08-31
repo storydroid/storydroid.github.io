@@ -1,0 +1,39 @@
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        boolean activeTerminal;
+        boolean z = false;
+        super.onPrepareOptionsMenu(menu);
+        setVolumeControlStream(5);
+        TerminalView view = this.adapter.getCurrentTerminalView();
+        if (view != null) {
+            activeTerminal = true;
+        } else {
+            activeTerminal = false;
+        }
+        boolean sessionOpen = false;
+        boolean disconnected = false;
+        boolean canForwardPorts = false;
+        if (activeTerminal) {
+            TerminalBridge bridge = view.bridge;
+            sessionOpen = bridge.isSessionOpen();
+            disconnected = bridge.isDisconnected();
+            canForwardPorts = bridge.canFowardPorts();
+        }
+        this.disconnect.setEnabled(activeTerminal);
+        if (sessionOpen || !disconnected) {
+            this.disconnect.setTitle(R.string.list_host_disconnect);
+        } else {
+            this.disconnect.setTitle(R.string.console_menu_close);
+        }
+        if (VERSION.SDK_INT < 11) {
+            this.copy.setEnabled(activeTerminal);
+        }
+        this.paste.setEnabled(activeTerminal);
+        MenuItem menuItem = this.portForward;
+        if (sessionOpen && canForwardPorts) {
+            z = true;
+        }
+        menuItem.setEnabled(z);
+        this.urlscan.setEnabled(activeTerminal);
+        this.resize.setEnabled(sessionOpen);
+        return true;
+    }

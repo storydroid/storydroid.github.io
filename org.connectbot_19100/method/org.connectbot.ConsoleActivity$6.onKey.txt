@@ -1,0 +1,14 @@
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == 1 || keyCode != 66) {
+                    return false;
+                }
+                String value = ConsoleActivity.this.stringPrompt.getText().toString();
+                PromptHelper helper = ConsoleActivity.this.getCurrentPromptHelper();
+                if (helper == null) {
+                    return false;
+                }
+                helper.setResponse(value);
+                ConsoleActivity.this.stringPrompt.setText("");
+                ConsoleActivity.this.updatePromptVisible();
+                return true;
+            }

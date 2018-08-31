@@ -1,0 +1,10 @@
+        public void onClick(View v) {
+            if (PortForwardListActivity.this.hostBridge != null) {
+                if (this.portForward.isEnabled()) {
+                    PortForwardListActivity.this.hostBridge.disablePortForward(this.portForward);
+                } else if (!PortForwardListActivity.this.hostBridge.enablePortForward(this.portForward)) {
+                    Toast.makeText(PortForwardListActivity.this, PortForwardListActivity.this.getString(R.string.portforward_problem), 1).show();
+                }
+                PortForwardListActivity.this.updateHandler.sendEmptyMessage(-1);
+            }
+        }

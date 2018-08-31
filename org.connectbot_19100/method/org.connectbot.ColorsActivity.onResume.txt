@@ -1,0 +1,6 @@
+    protected void onResume() {
+        super.onResume();
+        if (this.mHostDb == null) {
+            this.mHostDb = HostDatabase.get(this);
+        }
+    }

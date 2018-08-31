@@ -1,0 +1,9 @@
+    public int[] getColorsForScheme(int scheme) {
+        int[] colors = (int[]) Colors.defaults.clone();
+        Cursor c = this.mDb.query("colors", new String[]{"number", "value"}, "scheme = ?", new String[]{String.valueOf(scheme)}, null, null, null);
+        while (c.moveToNext()) {
+            colors[c.getInt(0)] = c.getInt(1);
+        }
+        c.close();
+        return colors;
+    }

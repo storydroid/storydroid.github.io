@@ -1,0 +1,8 @@
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        TerminalView currentTerminalView = this.adapter.getCurrentTerminalView();
+        if (!(currentTerminalView == null || currentTerminalView.bridge.isDisconnected())) {
+            this.requested = currentTerminalView.bridge.host.getUri();
+            savedInstanceState.putString("selectedUri", this.requested.toString());
+        }
+        super.onSaveInstanceState(savedInstanceState);
+    }

@@ -1,0 +1,5 @@
+    private void startEntropyGather() {
+        View entropyView = this.inflater.inflate(R.layout.dia_gatherentropy, null, false);
+        ((EntropyView) entropyView.findViewById(R.id.entropy)).addOnEntropyGatheredListener(this);
+        new EntropyDialog(this, entropyView).show();
+    }

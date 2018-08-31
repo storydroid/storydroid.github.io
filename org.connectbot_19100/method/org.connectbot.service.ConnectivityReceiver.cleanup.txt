@@ -1,0 +1,6 @@
+    public void cleanup() {
+        if (this.mWifiLock.isHeld()) {
+            this.mWifiLock.release();
+        }
+        this.mTerminalManager.unregisterReceiver(this);
+    }

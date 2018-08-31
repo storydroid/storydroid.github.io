@@ -1,0 +1,26 @@
+    public void setColorForScheme(int scheme, int number, int value) {
+        String[] whereArgs = new String[]{String.valueOf(scheme), String.valueOf(number)};
+        if (value == Colors.defaults[number]) {
+            this.mDb.beginTransaction();
+            try {
+                this.mDb.delete("colors", "scheme = ? AND number = ?", whereArgs);
+                this.mDb.setTransactionSuccessful();
+            } finally {
+                this.mDb.endTransaction();
+            }
+        } else {
+            ContentValues values = new ContentValues();
+            values.put("value", Integer.valueOf(value));
+            this.mDb.beginTransaction();
+            try {
+                if (this.mDb.update("colors", values, "scheme = ? AND number = ?", whereArgs) == 0) {
+                    values.put("scheme", Integer.valueOf(scheme));
+                    values.put("number", Integer.valueOf(number));
+                    this.mDb.insert("colors", null, values);
+                }
+                this.mDb.setTransactionSuccessful();
+            } finally {
+                this.mDb.endTransaction();
+            }
+        }
+    }

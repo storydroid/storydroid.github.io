@@ -1,0 +1,3 @@
+    public static PrivateKey decodePrivate(byte[] encoded, String keyType) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        return KeyFactory.getInstance(keyType).generatePrivate(new PKCS8EncodedKeySpec(encoded));
+    }

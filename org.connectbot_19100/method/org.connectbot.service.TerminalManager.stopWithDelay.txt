@@ -1,0 +1,13 @@
+    private void stopWithDelay() {
+        if (this.loadedKeypairs.size() > 0) {
+            synchronized (this) {
+                if (this.idleTimer == null) {
+                    this.idleTimer = new Timer("idleTimer", true);
+                }
+                this.idleTimer.schedule(new IdleTask(), 300000);
+            }
+            return;
+        }
+        Log.d("CB.TerminalManager", "Stopping service immediately");
+        stopSelf();
+    }

@@ -1,0 +1,3 @@
+    public ActionBar getSupportActionBar() {
+        return getDelegate().getSupportActionBar();
+    }

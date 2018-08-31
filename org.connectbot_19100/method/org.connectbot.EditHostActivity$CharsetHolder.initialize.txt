@@ -1,0 +1,17 @@
+        private static synchronized void initialize() {
+            synchronized (CharsetHolder.class) {
+                if (!mInitialized) {
+                    mData = new HashMap();
+                    for (Entry<String, Charset> entry : Charset.availableCharsets().entrySet()) {
+                        Charset c = (Charset) entry.getValue();
+                        if (c.canEncode() && c.isRegistered()) {
+                            if (((String) entry.getKey()).startsWith("cp")) {
+                                mData.put("CP437", "CP437");
+                            }
+                            mData.put(c.displayName(), entry.getKey());
+                        }
+                    }
+                    mInitialized = true;
+                }
+            }
+        }

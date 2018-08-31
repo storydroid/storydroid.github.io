@@ -1,0 +1,3 @@
+    public void setCompression(boolean compression) {
+        this.compression = compression;
+    }

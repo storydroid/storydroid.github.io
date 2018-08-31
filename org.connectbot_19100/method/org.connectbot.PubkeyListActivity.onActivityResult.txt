@@ -1,0 +1,27 @@
+    protected void onActivityResult(int requestCode, int resultCode, Intent resultData) {
+        super.onActivityResult(requestCode, resultCode, resultData);
+        switch (requestCode) {
+            case 1:
+                if (resultCode == -1 && resultData != null) {
+                    Uri uri = resultData.getData();
+                    if (uri != null) {
+                        try {
+                            readKeyFromFile(uri);
+                            return;
+                        } catch (IllegalArgumentException e) {
+                            Log.e("CB.PubkeyListActivity", "Couldn't read from picked file", e);
+                            return;
+                        }
+                    }
+                    String filename = resultData.getDataString();
+                    if (filename != null) {
+                        readKeyFromFile(Uri.parse(filename));
+                        return;
+                    }
+                    return;
+                }
+                return;
+            default:
+                return;
+        }
+    }

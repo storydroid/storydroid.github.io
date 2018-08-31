@@ -1,0 +1,6 @@
+        public static Map<String, String> getCharsetData() {
+            if (mData == null) {
+                initialize();
+            }
+            return mData;
+        }

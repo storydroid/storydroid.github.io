@@ -1,0 +1,3 @@
+        public void registerOnSharedPreferenceChangeListener(OnSharedPreferenceChangeListener listener) {
+            this.listeners.add(listener);
+        }

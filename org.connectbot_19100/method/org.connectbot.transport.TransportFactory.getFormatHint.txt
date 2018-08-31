@@ -1,0 +1,12 @@
+    public static String getFormatHint(String protocol, Context context) {
+        if (SSH.getProtocolName().equals(protocol)) {
+            return SSH.getFormatHint(context);
+        }
+        if (Telnet.getProtocolName().equals(protocol)) {
+            return Telnet.getFormatHint(context);
+        }
+        if (Local.getProtocolName().equals(protocol)) {
+            return Local.getFormatHint(context);
+        }
+        return AbsTransport.getFormatHint(context);
+    }

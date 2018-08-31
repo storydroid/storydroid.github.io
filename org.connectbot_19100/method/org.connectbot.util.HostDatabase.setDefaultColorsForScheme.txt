@@ -1,0 +1,17 @@
+    public void setDefaultColorsForScheme(int scheme, int fg, int bg) {
+        String schemeWhere = "scheme = ?";
+        String[] whereArgs = new String[]{String.valueOf(scheme)};
+        ContentValues values = new ContentValues();
+        values.put("fg", Integer.valueOf(fg));
+        values.put("bg", Integer.valueOf(bg));
+        this.mDb.beginTransaction();
+        try {
+            if (this.mDb.update("colorDefaults", values, schemeWhere, whereArgs) == 0) {
+                values.put("scheme", Integer.valueOf(scheme));
+                this.mDb.insert("colorDefaults", null, values);
+            }
+            this.mDb.setTransactionSuccessful();
+        } finally {
+            this.mDb.endTransaction();
+        }
+    }

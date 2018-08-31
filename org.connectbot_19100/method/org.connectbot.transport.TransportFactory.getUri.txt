@@ -1,0 +1,14 @@
+    public static Uri getUri(String scheme, String input) {
+        Log.d("TransportFactory", String.format("Attempting to discover URI for scheme=%s on input=%s", new Object[]{scheme, input}));
+        if (SSH.getProtocolName().equals(scheme)) {
+            return SSH.getUri(input);
+        }
+        if (Telnet.getProtocolName().equals(scheme)) {
+            return Telnet.getUri(input);
+        }
+        if (!Local.getProtocolName().equals(scheme)) {
+            return null;
+        }
+        Log.d("TransportFactory", "Got to the local parsing area");
+        return Local.getUri(input);
+    }

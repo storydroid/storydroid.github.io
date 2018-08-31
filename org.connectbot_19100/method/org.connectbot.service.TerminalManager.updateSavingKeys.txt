@@ -1,0 +1,8 @@
+        updateSavingKeys();
+        for (PubkeyBean pubkey : this.pubkeydb.getAllStartPubkeys()) {
+            try {
+                addKey(pubkey, new KeyPair(PubkeyUtils.decodePublic(pubkey.getPublicKey(), pubkey.getType()), PubkeyUtils.decodePrivate(pubkey.getPrivateKey(), pubkey.getType())));
+            } catch (Exception e) {
+                Log.d("CB.TerminalManager", String.format("Problem adding key '%s' to in-memory cache", new Object[]{pubkey.getNickname()}), e);
+            }
+        }

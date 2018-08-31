@@ -1,0 +1,35 @@
+    private void readKeyFromFile(Uri uri) {
+        PubkeyBean pubkey = new PubkeyBean();
+        pubkey.setNickname(uri.getLastPathSegment());
+        try {
+            byte[] keyData = getBytesFromInputStream(getContentResolver().openInputStream(uri), 32768);
+            KeyPair kp = readPKCS8Key(keyData);
+            if (kp != null) {
+                pubkey.setType(convertAlgorithmName(kp.getPrivate().getAlgorithm()));
+                pubkey.setPrivateKey(kp.getPrivate().getEncoded());
+                pubkey.setPublicKey(kp.getPublic().getEncoded());
+            } else {
+                try {
+                    PEMStructure struct = PEMDecoder.parsePEM(new String(keyData).toCharArray());
+                    boolean encrypted = PEMDecoder.isPEMEncrypted(struct);
+                    pubkey.setEncrypted(encrypted);
+                    if (encrypted) {
+                        pubkey.setType("IMPORTED");
+                        pubkey.setPrivateKey(keyData);
+                    } else {
+                        kp = PEMDecoder.decode(struct, null);
+                        pubkey.setType(convertAlgorithmName(kp.getPrivate().getAlgorithm()));
+                        pubkey.setPrivateKey(kp.getPrivate().getEncoded());
+                        pubkey.setPublicKey(kp.getPublic().getEncoded());
+                    }
+                } catch (IOException e) {
+                    Log.e("CB.PubkeyListActivity", "Problem parsing imported private key", e);
+                    Toast.makeText(this, R.string.pubkey_import_parse_problem, 1).show();
+                }
+            }
+            PubkeyDatabase.get(this).savePubkey(pubkey);
+            updateList();
+        } catch (IOException e2) {
+            Toast.makeText(this, R.string.pubkey_import_parse_problem, 1).show();
+        }
+    }

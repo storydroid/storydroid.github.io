@@ -1,0 +1,44 @@
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        if (!this.makingShortcut) {
+            this.sortcolor = menu.add(R.string.list_menu_sortcolor);
+            this.sortcolor.setIcon(17301586);
+            this.sortcolor.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+                public boolean onMenuItemClick(MenuItem item) {
+                    HostListActivity.this.sortedByColor = true;
+                    HostListActivity.this.updateList();
+                    return true;
+                }
+            });
+            this.sortlast = menu.add(R.string.list_menu_sortname);
+            this.sortlast.setIcon(17301586);
+            this.sortlast.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+                public boolean onMenuItemClick(MenuItem item) {
+                    HostListActivity.this.sortedByColor = false;
+                    HostListActivity.this.updateList();
+                    return true;
+                }
+            });
+            MenuItem keys = menu.add(R.string.list_menu_pubkeys);
+            keys.setIcon(17301551);
+            keys.setIntent(new Intent(this, PubkeyListActivity.class));
+            MenuItem colors = menu.add(R.string.title_colors);
+            colors.setIcon(17301587);
+            colors.setIntent(new Intent(this, ColorsActivity.class));
+            this.disconnectall = menu.add(R.string.list_menu_disconnect);
+            this.disconnectall.setIcon(17301564);
+            this.disconnectall.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    HostListActivity.this.disconnectAll();
+                    return false;
+                }
+            });
+            MenuItem settings = menu.add(R.string.list_menu_settings);
+            settings.setIcon(17301577);
+            settings.setIntent(new Intent(this, SettingsActivity.class));
+            MenuItem help = menu.add(R.string.title_help);
+            help.setIcon(17301568);
+            help.setIntent(new Intent(this, HelpActivity.class));
+        }
+        return true;
+    }

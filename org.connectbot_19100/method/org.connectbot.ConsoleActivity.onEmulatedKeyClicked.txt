@@ -1,0 +1,91 @@
+    private void onEmulatedKeyClicked(View v) {
+        TerminalView terminal = this.adapter.getCurrentTerminalView();
+        if (terminal != null) {
+            TerminalKeyListener handler = terminal.bridge.getKeyHandler();
+            boolean hideKeys = false;
+            switch (v.getId()) {
+                case R.id.button_ctrl:
+                    handler.metaPress(1, true);
+                    hideKeys = true;
+                    break;
+                case R.id.button_esc:
+                    handler.sendEscape();
+                    hideKeys = true;
+                    break;
+                case R.id.button_tab:
+                    handler.sendTab();
+                    hideKeys = true;
+                    break;
+                case R.id.button_up:
+                    handler.sendPressedKey(14);
+                    break;
+                case R.id.button_down:
+                    handler.sendPressedKey(15);
+                    break;
+                case R.id.button_left:
+                    handler.sendPressedKey(16);
+                    break;
+                case R.id.button_right:
+                    handler.sendPressedKey(17);
+                    break;
+                case R.id.button_home:
+                    handler.sendPressedKey(23);
+                    break;
+                case R.id.button_end:
+                    handler.sendPressedKey(24);
+                    break;
+                case R.id.button_pgup:
+                    handler.sendPressedKey(19);
+                    break;
+                case R.id.button_pgdn:
+                    handler.sendPressedKey(18);
+                    break;
+                case R.id.button_f1:
+                    handler.sendPressedKey(2);
+                    break;
+                case R.id.button_f2:
+                    handler.sendPressedKey(3);
+                    break;
+                case R.id.button_f3:
+                    handler.sendPressedKey(4);
+                    break;
+                case R.id.button_f4:
+                    handler.sendPressedKey(5);
+                    break;
+                case R.id.button_f5:
+                    handler.sendPressedKey(6);
+                    break;
+                case R.id.button_f6:
+                    handler.sendPressedKey(7);
+                    break;
+                case R.id.button_f7:
+                    handler.sendPressedKey(8);
+                    break;
+                case R.id.button_f8:
+                    handler.sendPressedKey(9);
+                    break;
+                case R.id.button_f9:
+                    handler.sendPressedKey(10);
+                    break;
+                case R.id.button_f10:
+                    handler.sendPressedKey(11);
+                    break;
+                case R.id.button_f11:
+                    handler.sendPressedKey(12);
+                    break;
+                case R.id.button_f12:
+                    handler.sendPressedKey(13);
+                    break;
+                default:
+                    Log.e("CB.ConsoleActivity", "Unknown emulated key clicked: " + v.getId());
+                    break;
+            }
+            if (hideKeys) {
+                hideEmulatedKeys();
+            } else {
+                autoHideEmulatedKeys();
+            }
+            terminal.bridge.tryKeyVibrate();
+            hideActionBarIfRequested();
+        }
+    }

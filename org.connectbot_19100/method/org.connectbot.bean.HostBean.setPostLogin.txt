@@ -1,0 +1,3 @@
+    public void setPostLogin(String postLogin) {
+        this.postLogin = postLogin;
+    }

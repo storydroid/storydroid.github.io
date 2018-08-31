@@ -1,0 +1,22 @@
+    private void configureOrientation() {
+        String rotateDefault;
+        if (getResources().getConfiguration().keyboard == 1) {
+            rotateDefault = "Force portrait";
+        } else {
+            rotateDefault = "Force landscape";
+        }
+        String rotate = this.prefs.getString("rotation", rotateDefault);
+        if ("Default".equals(rotate)) {
+            rotate = rotateDefault;
+        }
+        if ("Force landscape".equals(rotate)) {
+            setRequestedOrientation(0);
+            this.forcedOrientation = true;
+        } else if ("Force portrait".equals(rotate)) {
+            setRequestedOrientation(1);
+            this.forcedOrientation = true;
+        } else {
+            setRequestedOrientation(-1);
+            this.forcedOrientation = false;
+        }
+    }

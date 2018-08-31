@@ -1,0 +1,4 @@
+    protected void hideAllPrompts() {
+        this.stringPromptGroup.setVisibility(8);
+        this.booleanPromptGroup.setVisibility(8);
+    }

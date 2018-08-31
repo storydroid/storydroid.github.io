@@ -1,0 +1,11 @@
+    public String getNickname(long id) {
+        String nickname = null;
+        Cursor c = this.mDb.query("pubkeys", new String[]{"_id", "nickname"}, "_id = ?", new String[]{Long.toString(id)}, null, null, null);
+        if (c != null) {
+            if (c.moveToFirst()) {
+                nickname = c.getString(c.getColumnIndexOrThrow("nickname"));
+            }
+            c.close();
+        }
+        return nickname;
+    }

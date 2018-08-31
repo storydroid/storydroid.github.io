@@ -1,0 +1,6 @@
+    public List<HostBean> getHosts(boolean sortColors) {
+        Cursor c = this.mDb.query("hosts", null, null, null, null, null, (sortColors ? "color" : "nickname") + " ASC");
+        List<HostBean> hosts = createHostBeans(c);
+        c.close();
+        return hosts;
+    }

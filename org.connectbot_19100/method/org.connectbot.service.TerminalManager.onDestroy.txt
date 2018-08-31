@@ -1,0 +1,17 @@
+    public void onDestroy() {
+        Log.i("CB.TerminalManager", "Destroying service");
+        disconnectAll(true, false);
+        this.hostdb = null;
+        this.pubkeydb = null;
+        synchronized (this) {
+            if (this.idleTimer != null) {
+                this.idleTimer.cancel();
+            }
+            if (this.pubkeyTimer != null) {
+                this.pubkeyTimer.cancel();
+            }
+        }
+        this.connectivityManager.cleanup();
+        ConnectionNotifier.getInstance().hideRunningNotification(this);
+        disableMediaPlayer();
+    }

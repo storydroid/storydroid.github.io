@@ -1,0 +1,10 @@
+    public void setWantWifiLock(boolean lockingWifi) {
+        synchronized (this.mLock) {
+            this.mLockingWifi = lockingWifi;
+            if (this.mLockingWifi) {
+                acquireWifiLockIfNecessaryLocked();
+            } else {
+                releaseWifiLockIfNecessaryLocked();
+            }
+        }
+    }

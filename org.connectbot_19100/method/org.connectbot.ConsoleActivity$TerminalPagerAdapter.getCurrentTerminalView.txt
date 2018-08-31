@@ -1,0 +1,7 @@
+        public TerminalView getCurrentTerminalView() {
+            View currentView = ConsoleActivity.this.pager.findViewWithTag(getBridgeAtPosition(ConsoleActivity.this.pager.getCurrentItem()));
+            if (currentView == null) {
+                return null;
+            }
+            return (TerminalView) currentView.findViewById(R.id.terminal_view);
+        }

@@ -1,0 +1,3 @@
+        if ((VERSION.SDK_INT >= 19 && importExistingKeyKitKat()) || importExistingKeyOpenIntents(sdcard, pickerTitle) || importExistingKeyAndExplorer(sdcard, pickerTitle) || pickFileSimple()) {
+            return true;
+        }

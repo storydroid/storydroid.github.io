@@ -1,0 +1,7 @@
+    public void setPublicKey(byte[] encoded) {
+        if (encoded == null) {
+            this.publicKey = null;
+        } else {
+            this.publicKey = (byte[]) encoded.clone();
+        }
+    }

@@ -1,0 +1,11 @@
+    private void attemptSaveAndExit() {
+        if (this.mHost == null) {
+            showDiscardDialog();
+            return;
+        }
+        this.mHostDb.saveHost(this.mHost);
+        if (this.mBridge != null) {
+            this.mBridge.setCharset(this.mHost.getEncoding());
+        }
+        finish();
+    }

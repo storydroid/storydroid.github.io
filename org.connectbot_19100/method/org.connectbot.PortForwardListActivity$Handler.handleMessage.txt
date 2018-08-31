@@ -1,0 +1,3 @@
+        public void handleMessage(Message msg) {
+            ((PortForwardListActivity) this.mActivity.get()).updateList();
+        }

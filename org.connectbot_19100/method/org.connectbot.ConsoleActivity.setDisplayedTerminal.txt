@@ -1,0 +1,5 @@
+    private void setDisplayedTerminal(int requestedIndex) {
+        this.pager.setCurrentItem(requestedIndex);
+        setTitle(this.adapter.getPageTitle(requestedIndex));
+        onTerminalChanged();
+    }

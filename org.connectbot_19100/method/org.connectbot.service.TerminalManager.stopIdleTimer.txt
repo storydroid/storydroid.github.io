@@ -1,0 +1,6 @@
+    private synchronized void stopIdleTimer() {
+        if (this.idleTimer != null) {
+            this.idleTimer.cancel();
+            this.idleTimer = null;
+        }
+    }

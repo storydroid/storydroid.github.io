@@ -1,0 +1,22 @@
+        private static synchronized void initialize() {
+            synchronized (CharsetHolder.class) {
+                if (!initialized) {
+                    List<CharSequence> charsetIdsList = new LinkedList();
+                    List<CharSequence> charsetNamesList = new LinkedList();
+                    for (Entry<String, Charset> entry : Charset.availableCharsets().entrySet()) {
+                        Charset c = (Charset) entry.getValue();
+                        if (c.canEncode() && c.isRegistered()) {
+                            if (((String) entry.getKey()).startsWith("cp")) {
+                                charsetIdsList.add("CP437");
+                                charsetNamesList.add("CP437");
+                            }
+                            charsetIdsList.add(entry.getKey());
+                            charsetNamesList.add(c.displayName());
+                        }
+                    }
+                    charsetIds = (CharSequence[]) charsetIdsList.toArray(new CharSequence[charsetIdsList.size()]);
+                    charsetNames = (CharSequence[]) charsetNamesList.toArray(new CharSequence[charsetNamesList.size()]);
+                    initialized = true;
+                }
+            }
+        }

@@ -1,0 +1,11 @@
+    public void setupTabLayoutWithViewPager() {
+        this.tabs.setTabsFromPagerAdapter(this.adapter);
+        this.pager.addOnPageChangeListener(new TabLayoutOnPageChangeListener(this.tabs));
+        this.tabs.setOnTabSelectedListener(new ViewPagerOnTabSelectedListener(this.pager));
+        if (this.adapter.getCount() > 0) {
+            int curItem = this.pager.getCurrentItem();
+            if (this.tabs.getSelectedTabPosition() != curItem) {
+                this.tabs.getTabAt(curItem).select();
+            }
+        }
+    }

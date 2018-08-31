@@ -1,0 +1,15 @@
+    static String getOidFromPkcs8Encoded(byte[] encoded) throws NoSuchAlgorithmException {
+        if (encoded == null) {
+            throw new NoSuchAlgorithmException("encoding is null");
+        }
+        try {
+            SimpleDERReader reader = new SimpleDERReader(encoded);
+            reader.resetInput(reader.readSequenceAsByteArray());
+            reader.readInt();
+            reader.resetInput(reader.readSequenceAsByteArray());
+            return reader.readOid();
+        } catch (IOException e) {
+            Log.w("CB.PubkeyUtils", "Could not read OID", e);
+            throw new NoSuchAlgorithmException("Could not read key", e);
+        }
+    }

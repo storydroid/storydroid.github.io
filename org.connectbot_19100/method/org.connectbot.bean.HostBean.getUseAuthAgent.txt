@@ -1,0 +1,3 @@
+    public String getUseAuthAgent() {
+        return this.useAuthAgent;
+    }

@@ -1,0 +1,4 @@
+        updatePromptVisible();
+        if (this.pager.getChildCount() == 0) {
+            finish();
+        }

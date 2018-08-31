@@ -1,0 +1,12 @@
+    public static HostEditorFragment newInstance(HostBean existingHost, ArrayList<String> pubkeyNames, ArrayList<String> pubkeyValues) {
+        HostEditorFragment fragment = new HostEditorFragment();
+        Bundle args = new Bundle();
+        if (existingHost != null) {
+            args.putLong("existingHostId", existingHost.getId());
+            args.putParcelable("existingHost", existingHost.getValues());
+        }
+        args.putStringArrayList("pubkeyNames", pubkeyNames);
+        args.putStringArrayList("pubkeyValues", pubkeyValues);
+        fragment.setArguments(args);
+        return fragment;
+    }

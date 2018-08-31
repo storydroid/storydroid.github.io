@@ -1,0 +1,6 @@
+    private void updateDefault() {
+        TerminalView view = this.adapter.getCurrentTerminalView();
+        if (view != null && this.bound != null) {
+            this.bound.defaultBridge = view.bridge;
+        }
+    }

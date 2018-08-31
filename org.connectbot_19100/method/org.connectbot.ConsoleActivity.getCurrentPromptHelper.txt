@@ -1,0 +1,7 @@
+    protected PromptHelper getCurrentPromptHelper() {
+        TerminalView view = this.adapter.getCurrentTerminalView();
+        if (view == null) {
+            return null;
+        }
+        return view.bridge.promptHelper;
+    }

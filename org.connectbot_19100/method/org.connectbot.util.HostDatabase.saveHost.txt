@@ -1,0 +1,17 @@
+    public HostBean saveHost(HostBean host) {
+        long id = host.getId();
+        this.mDb.beginTransaction();
+        if (id == -1) {
+            try {
+                id = this.mDb.insert("hosts", null, host.getValues());
+            } catch (Throwable th) {
+                this.mDb.endTransaction();
+            }
+        } else {
+            this.mDb.update("hosts", host.getValues(), "_id = ?", new String[]{String.valueOf(id)});
+        }
+        this.mDb.setTransactionSuccessful();
+        this.mDb.endTransaction();
+        host.setId(id);
+        return host;
+    }

@@ -1,0 +1,6 @@
+    private void disableMediaPlayer() {
+        if (this.mediaPlayer != null) {
+            this.mediaPlayer.release();
+            this.mediaPlayer = null;
+        }
+    }

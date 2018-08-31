@@ -1,0 +1,3 @@
+    public void setQuickDisconnect(boolean quickDisconnect) {
+        this.quickDisconnect = quickDisconnect;
+    }

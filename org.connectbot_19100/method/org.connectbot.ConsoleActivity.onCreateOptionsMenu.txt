@@ -1,0 +1,125 @@
+    public boolean onCreateOptionsMenu(Menu menu) {
+        boolean activeTerminal;
+        boolean z = false;
+        super.onCreateOptionsMenu(menu);
+        TerminalView view = this.adapter.getCurrentTerminalView();
+        if (view != null) {
+            activeTerminal = true;
+        } else {
+            activeTerminal = false;
+        }
+        boolean sessionOpen = false;
+        boolean disconnected = false;
+        boolean canForwardPorts = false;
+        if (activeTerminal) {
+            TerminalBridge bridge = view.bridge;
+            sessionOpen = bridge.isSessionOpen();
+            disconnected = bridge.isDisconnected();
+            canForwardPorts = bridge.canFowardPorts();
+        }
+        menu.setQwertyMode(true);
+        this.disconnect = menu.add(R.string.list_host_disconnect);
+        if (this.hardKeyboard) {
+            this.disconnect.setAlphabeticShortcut('w');
+        }
+        if (!sessionOpen && disconnected) {
+            this.disconnect.setTitle(R.string.console_menu_close);
+        }
+        this.disconnect.setEnabled(activeTerminal);
+        this.disconnect.setIcon(17301560);
+        this.disconnect.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+                ConsoleActivity.this.adapter.getCurrentTerminalView().bridge.dispatchDisconnect(true);
+                return true;
+            }
+        });
+        if (VERSION.SDK_INT < 11) {
+            this.copy = menu.add(R.string.console_menu_copy);
+            if (this.hardKeyboard) {
+                this.copy.setAlphabeticShortcut('c');
+            }
+            MenuItemCompat.setShowAsAction(this.copy, 1);
+            this.copy.setIcon(R.drawable.ic_action_copy);
+            this.copy.setEnabled(activeTerminal);
+            this.copy.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+                public boolean onMenuItemClick(MenuItem item) {
+                    ConsoleActivity.this.adapter.getCurrentTerminalView().startPreHoneycombCopyMode();
+                    Toast.makeText(ConsoleActivity.this, ConsoleActivity.this.getString(R.string.console_copy_start), 1).show();
+                    return true;
+                }
+            });
+        }
+        this.paste = menu.add(R.string.console_menu_paste);
+        if (this.hardKeyboard) {
+            this.paste.setAlphabeticShortcut('v');
+        }
+        MenuItemCompat.setShowAsAction(this.paste, 1);
+        this.paste.setIcon(R.drawable.ic_action_paste);
+        this.paste.setEnabled(activeTerminal);
+        this.paste.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+                ConsoleActivity.this.pasteIntoTerminal();
+                return true;
+            }
+        });
+        this.portForward = menu.add(R.string.console_menu_portforwards);
+        if (this.hardKeyboard) {
+            this.portForward.setAlphabeticShortcut('f');
+        }
+        this.portForward.setIcon(17301570);
+        MenuItem menuItem = this.portForward;
+        if (sessionOpen && canForwardPorts) {
+            z = true;
+        }
+        menuItem.setEnabled(z);
+        this.portForward.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+                TerminalBridge bridge = ConsoleActivity.this.adapter.getCurrentTerminalView().bridge;
+                Intent intent = new Intent(ConsoleActivity.this, PortForwardListActivity.class);
+                intent.putExtra("android.intent.extra.TITLE", bridge.host.getId());
+                ConsoleActivity.this.startActivityForResult(intent, 1);
+                return true;
+            }
+        });
+        this.urlscan = menu.add(R.string.console_menu_urlscan);
+        if (this.hardKeyboard) {
+            this.urlscan.setAlphabeticShortcut('u');
+        }
+        this.urlscan.setIcon(17301583);
+        this.urlscan.setEnabled(activeTerminal);
+        this.urlscan.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+                List<String> urls = ConsoleActivity.this.adapter.getCurrentTerminalView().bridge.scanForURLs();
+                Dialog urlDialog = new Dialog(ConsoleActivity.this);
+                urlDialog.setTitle(R.string.console_menu_urlscan);
+                ListView urlListView = new ListView(ConsoleActivity.this);
+                urlListView.setOnItemClickListener(new URLItemListener(ConsoleActivity.this));
+                urlListView.setAdapter(new ArrayAdapter(ConsoleActivity.this, 17367043, urls));
+                urlDialog.setContentView(urlListView);
+                urlDialog.show();
+                return true;
+            }
+        });
+        this.resize = menu.add(R.string.console_menu_resize);
+        if (this.hardKeyboard) {
+            this.resize.setAlphabeticShortcut('s');
+        }
+        this.resize.setIcon(17301562);
+        this.resize.setEnabled(sessionOpen);
+        this.resize.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+                final TerminalView terminalView = ConsoleActivity.this.adapter.getCurrentTerminalView();
+                final View resizeView = ConsoleActivity.this.inflater.inflate(R.layout.dia_resize, null, false);
+                new Builder(ConsoleActivity.this, R.style.AlertDialogTheme).setView(resizeView).setPositiveButton(R.string.button_resize, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            terminalView.forceSize(Integer.parseInt(((EditText) resizeView.findViewById(R.id.width)).getText().toString()), Integer.parseInt(((EditText) resizeView.findViewById(R.id.height)).getText().toString()));
+                        } catch (NumberFormatException e) {
+                        }
+                    }
+                }).setNegativeButton(17039360, null).create().show();
+                return true;
+            }
+        });
+        return true;
+    }

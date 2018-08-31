@@ -1,0 +1,46 @@
+    protected void onCreate(Bundle savedInstanceState) {
+        HostBean hostBean;
+        int i;
+        super.onCreate(savedInstanceState);
+        this.mHostDb = HostDatabase.get(this);
+        this.mPubkeyDb = PubkeyDatabase.get(this);
+        this.mTerminalConnection = new ServiceConnection() {
+            public void onServiceConnected(ComponentName className, IBinder service) {
+                EditHostActivity.this.mBridge = ((TerminalBinder) service).getService().getConnectedBridge(EditHostActivity.this.mHost);
+            }
+
+            public void onServiceDisconnected(ComponentName name) {
+                EditHostActivity.this.mBridge = null;
+            }
+        };
+        long hostId = getIntent().getLongExtra("org.connectbot.existing_host_id", -1);
+        this.mIsCreating = hostId == -1;
+        if (this.mIsCreating) {
+            hostBean = null;
+        } else {
+            hostBean = this.mHostDb.findHostById(hostId);
+        }
+        this.mHost = hostBean;
+        ArrayList<String> pubkeyNames = new ArrayList();
+        ArrayList<String> pubkeyValues = new ArrayList();
+        TypedArray defaultPubkeyNames = getResources().obtainTypedArray(R.array.list_pubkeyids);
+        for (i = 0; i < defaultPubkeyNames.length(); i++) {
+            pubkeyNames.add(defaultPubkeyNames.getString(i));
+        }
+        TypedArray defaultPubkeyValues = getResources().obtainTypedArray(R.array.list_pubkeyids_value);
+        for (i = 0; i < defaultPubkeyValues.length(); i++) {
+            pubkeyValues.add(defaultPubkeyValues.getString(i));
+        }
+        for (CharSequence cs : this.mPubkeyDb.allValues("nickname")) {
+            pubkeyNames.add(cs.toString());
+        }
+        for (CharSequence cs2 : this.mPubkeyDb.allValues("_id")) {
+            pubkeyValues.add(cs2.toString());
+        }
+        setContentView((int) R.layout.activity_edit_host);
+        if (((HostEditorFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container)) == null) {
+            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, HostEditorFragment.newInstance(this.mHost, pubkeyNames, pubkeyValues)).commit();
+        }
+        defaultPubkeyNames.recycle();
+        defaultPubkeyValues.recycle();
+    }

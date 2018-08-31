@@ -1,0 +1,6 @@
+    public void onStart() {
+        super.onStart();
+        bindService(new Intent(this, TerminalManager.class), this.connection, 1);
+        this.hostdb = HostDatabase.get(this);
+        this.pubkeydb = PubkeyDatabase.get(this);
+    }

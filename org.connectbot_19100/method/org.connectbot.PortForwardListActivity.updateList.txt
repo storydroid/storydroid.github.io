@@ -1,0 +1,13 @@
+    protected void updateList() {
+        List<PortForwardBean> portForwards;
+        if (this.hostBridge != null) {
+            portForwards = this.hostBridge.getPortForwards();
+        } else if (this.hostdb != null) {
+            portForwards = this.hostdb.getPortForwardsForHost(this.host);
+        } else {
+            return;
+        }
+        this.mAdapter = new PortForwardAdapter(this, portForwards);
+        this.mListView.setAdapter(this.mAdapter);
+        adjustViewVisibility();
+    }

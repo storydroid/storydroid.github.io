@@ -1,0 +1,3 @@
+    public static String getFormatHint(Context context) {
+        return context.getString(R.string.hostpref_nickname_title);
+    }

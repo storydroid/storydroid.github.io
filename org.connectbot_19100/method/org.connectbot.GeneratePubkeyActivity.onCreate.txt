@@ -1,0 +1,65 @@
+    public void onCreate(Bundle icicle) {
+        super.onCreate(icicle);
+        setContentView((int) R.layout.act_generatepubkey);
+        this.nickname = (EditText) findViewById(R.id.nickname);
+        RadioGroup keyTypeGroup = (RadioGroup) findViewById(R.id.key_type);
+        this.bitsText = (EditText) findViewById(R.id.bits);
+        this.bitsSlider = (SeekBar) findViewById(R.id.bits_slider);
+        this.password1 = (EditText) findViewById(R.id.password1);
+        this.password2 = (EditText) findViewById(R.id.password2);
+        this.unlockAtStartup = (CheckBox) findViewById(R.id.unlock_at_startup);
+        this.confirmUse = (CheckBox) findViewById(R.id.confirm_use);
+        this.save = (Button) findViewById(R.id.save);
+        this.inflater = LayoutInflater.from(this);
+        this.nickname.addTextChangedListener(this.textChecker);
+        this.password1.addTextChangedListener(this.textChecker);
+        this.password2.addTextChangedListener(this.textChecker);
+        setKeyType(KeyType.RSA);
+        if (Security.getProviders("KeyPairGenerator.EC") == null) {
+            ((RadioButton) findViewById(R.id.ec)).setEnabled(false);
+        }
+        keyTypeGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.rsa) {
+                    GeneratePubkeyActivity.this.setKeyType(KeyType.RSA);
+                } else if (checkedId == R.id.dsa) {
+                    GeneratePubkeyActivity.this.setKeyType(KeyType.DSA);
+                } else if (checkedId == R.id.ec) {
+                    GeneratePubkeyActivity.this.setKeyType(KeyType.EC);
+                } else if (checkedId == R.id.ed25519) {
+                    GeneratePubkeyActivity.this.setKeyType(KeyType.ED25519);
+                }
+            }
+        });
+        this.bitsSlider.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromTouch) {
+                GeneratePubkeyActivity.this.setBits(GeneratePubkeyActivity.this.keyType.minimumBits + progress);
+            }
+
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                GeneratePubkeyActivity.this.setBits(GeneratePubkeyActivity.this.bits);
+            }
+        });
+        this.bitsText.setOnFocusChangeListener(new OnFocusChangeListener() {
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    int newBits;
+                    try {
+                        newBits = Integer.parseInt(GeneratePubkeyActivity.this.bitsText.getText().toString());
+                    } catch (NumberFormatException e) {
+                        newBits = GeneratePubkeyActivity.this.keyType.defaultBits;
+                    }
+                    GeneratePubkeyActivity.this.setBits(newBits);
+                }
+            }
+        });
+        this.save.setOnClickListener(new OnClickListener() {
+            public void onClick(View view) {
+                GeneratePubkeyActivity.this.save.setEnabled(false);
+                GeneratePubkeyActivity.this.startEntropyGather();
+            }
+        });
+    }

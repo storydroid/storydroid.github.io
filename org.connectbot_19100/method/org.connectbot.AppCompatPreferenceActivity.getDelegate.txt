@@ -1,0 +1,6 @@
+    private AppCompatDelegate getDelegate() {
+        if (this.mDelegate == null) {
+            this.mDelegate = AppCompatDelegate.create((Activity) this, null);
+        }
+        return this.mDelegate;
+    }

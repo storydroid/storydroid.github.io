@@ -1,0 +1,6 @@
+    public void onStop() {
+        super.onStop();
+        unbindService(this.connection);
+        this.hostdb = null;
+        this.pubkeydb = null;
+    }

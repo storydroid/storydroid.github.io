@@ -1,0 +1,12 @@
+    public boolean onCreateOptionsMenu(Menu menu) {
+        boolean z;
+        getMenuInflater().inflate(this.mIsCreating ? R.menu.edit_host_activity_add_menu : R.menu.edit_host_activity_edit_menu, menu);
+        this.mSaveHostButton = menu.getItem(0);
+        if (this.mIsCreating) {
+            z = false;
+        } else {
+            z = true;
+        }
+        setAddSaveButtonEnabled(z);
+        return super.onCreateOptionsMenu(menu);
+    }

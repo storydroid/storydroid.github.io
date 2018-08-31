@@ -1,0 +1,22 @@
+    public PubkeyBean savePubkey(PubkeyBean pubkey) {
+        boolean success = false;
+        ContentValues values = pubkey.getValues();
+        this.mDb.beginTransaction();
+        try {
+            if (pubkey.getId() > 0) {
+                values.remove("_id");
+                if (this.mDb.update("pubkeys", values, "_id = ?", new String[]{String.valueOf(pubkey.getId())}) > 0) {
+                    success = true;
+                }
+            }
+            if (!success) {
+                long id = this.mDb.insert("pubkeys", null, pubkey.getValues());
+                if (id != -1) {
+                    pubkey.setId(id);
+                }
+            }
+            this.mDb.setTransactionSuccessful();
+            return pubkey;
+        } finally {
+            this.mDb.endTransaction();
+        }

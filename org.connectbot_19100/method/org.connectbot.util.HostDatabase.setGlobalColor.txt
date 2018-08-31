@@ -1,0 +1,3 @@
+    public void setGlobalColor(int number, int value) {
+        setColorForScheme(0, number, value);
+    }

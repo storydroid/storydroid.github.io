@@ -1,0 +1,13 @@
+org.connectbot.HostListActivity-->org.connectbot.ConsoleActivity
+org.connectbot.HostListActivity-->org.connectbot.HelpActivity
+org.connectbot.HostListActivity-->org.connectbot.EditHostActivity
+org.connectbot.HelpActivity-->org.connectbot.HintsActivity
+org.connectbot.ConsoleActivity-->org.connectbot.EulaActivity
+org.connectbot.ConsoleActivity-->org.connectbot.HintsActivity
+org.connectbot.HelpActivity-->org.connectbot.EulaActivity
+org.connectbot.ConsoleActivity-->org.connectbot.HostListActivity
+org.connectbot.ConsoleActivity-->org.connectbot.EditHostActivity
+org.connectbot.PubkeyListActivity-->org.connectbot.GeneratePubkeyActivity
+org.connectbot.ConsoleActivity-->org.connectbot.ConsoleActivity
+org.connectbot.ConsoleActivity-->org.connectbot.PortForwardListActivity
+org.connectbot.ConsoleActivity-->org.connectbot.PubkeyListActivity

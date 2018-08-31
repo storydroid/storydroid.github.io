@@ -1,0 +1,12 @@
+    public static PubkeyDatabase get(Context context) {
+        PubkeyDatabase pubkeyDatabase;
+        synchronized (sInstanceLock) {
+            if (sInstance != null) {
+                pubkeyDatabase = sInstance;
+            } else {
+                sInstance = new PubkeyDatabase(context.getApplicationContext());
+                pubkeyDatabase = sInstance;
+            }
+        }
+        return pubkeyDatabase;
+    }

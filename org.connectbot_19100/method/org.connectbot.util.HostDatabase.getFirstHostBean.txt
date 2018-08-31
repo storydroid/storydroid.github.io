@@ -1,0 +1,9 @@
+    private HostBean getFirstHostBean(Cursor c) {
+        HostBean host = null;
+        List<HostBean> hosts = createHostBeans(c);
+        if (hosts.size() > 0) {
+            host = (HostBean) hosts.get(0);
+        }
+        c.close();
+        return host;
+    }

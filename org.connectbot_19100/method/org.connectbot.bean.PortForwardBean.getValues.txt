@@ -1,0 +1,10 @@
+    public ContentValues getValues() {
+        ContentValues values = new ContentValues();
+        values.put("hostid", Long.valueOf(this.hostId));
+        values.put("nickname", this.nickname);
+        values.put("type", this.type);
+        values.put("sourceport", Integer.valueOf(this.sourcePort));
+        values.put("destaddr", this.destAddr);
+        values.put("destport", Integer.valueOf(this.destPort));
+        return values;
+    }

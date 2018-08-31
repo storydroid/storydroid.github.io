@@ -1,0 +1,199 @@
+    public void onCreate(Bundle icicle) {
+        boolean z;
+        super.onCreate(icicle);
+        if (VERSION.SDK_INT >= 9) {
+            StrictModeSetup.run();
+        }
+        if (getResources().getConfiguration().keyboard == 2) {
+            z = true;
+        } else {
+            z = false;
+        }
+        this.hardKeyboard = z;
+        this.clipboard = (ClipboardManager) getSystemService("clipboard");
+        this.prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        this.titleBarHide = this.prefs.getBoolean("titlebarhide", false);
+        if (this.titleBarHide && VERSION.SDK_INT >= 11) {
+            requestActionBar();
+        }
+        setContentView((int) R.layout.act_console);
+        if (this.prefs.getBoolean("fullscreen", false)) {
+            getWindow().setFlags(1024, 1024);
+        }
+        setVolumeControlStream(3);
+        if (icicle == null) {
+            this.requested = getIntent().getData();
+        } else {
+            String uri = icicle.getString("selectedUri");
+            if (uri != null) {
+                this.requested = Uri.parse(uri);
+            }
+        }
+        this.inflater = LayoutInflater.from(this);
+        this.toolbar = (Toolbar) findViewById(R.id.toolbar);
+        this.pager = (TerminalViewPager) findViewById(R.id.console_flip);
+        this.pager.addOnPageChangeListener(new SimpleOnPageChangeListener() {
+            public void onPageSelected(int position) {
+                ConsoleActivity.this.setTitle(ConsoleActivity.this.adapter.getPageTitle(position));
+                ConsoleActivity.this.onTerminalChanged();
+            }
+        });
+        this.adapter = new TerminalPagerAdapter();
+        this.pager.setAdapter(this.adapter);
+        this.empty = (TextView) findViewById(16908292);
+        this.stringPromptGroup = (RelativeLayout) findViewById(R.id.console_password_group);
+        this.stringPromptInstructions = (TextView) findViewById(R.id.console_password_instructions);
+        this.stringPrompt = (EditText) findViewById(R.id.console_password);
+        this.stringPrompt.setOnKeyListener(new OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == 1 || keyCode != 66) {
+                    return false;
+                }
+                String value = ConsoleActivity.this.stringPrompt.getText().toString();
+                PromptHelper helper = ConsoleActivity.this.getCurrentPromptHelper();
+                if (helper == null) {
+                    return false;
+                }
+                helper.setResponse(value);
+                ConsoleActivity.this.stringPrompt.setText("");
+                ConsoleActivity.this.updatePromptVisible();
+                return true;
+            }
+        });
+        this.booleanPromptGroup = (RelativeLayout) findViewById(R.id.console_boolean_group);
+        this.booleanPrompt = (TextView) findViewById(R.id.console_prompt);
+        this.booleanYes = (Button) findViewById(R.id.console_prompt_yes);
+        this.booleanYes.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                PromptHelper helper = ConsoleActivity.this.getCurrentPromptHelper();
+                if (helper != null) {
+                    helper.setResponse(Boolean.TRUE);
+                    ConsoleActivity.this.updatePromptVisible();
+                }
+            }
+        });
+        this.booleanNo = (Button) findViewById(R.id.console_prompt_no);
+        this.booleanNo.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                PromptHelper helper = ConsoleActivity.this.getCurrentPromptHelper();
+                if (helper != null) {
+                    helper.setResponse(Boolean.FALSE);
+                    ConsoleActivity.this.updatePromptVisible();
+                }
+            }
+        });
+        this.fade_out_delayed = AnimationUtils.loadAnimation(this, R.anim.fade_out_delayed);
+        this.keyboard_fade_in = AnimationUtils.loadAnimation(this, R.anim.keyboard_fade_in);
+        this.keyboard_fade_out = AnimationUtils.loadAnimation(this, R.anim.keyboard_fade_out);
+        this.inputManager = (InputMethodManager) getSystemService("input_method");
+        this.keyboardGroup = (LinearLayout) findViewById(R.id.keyboard_group);
+        this.keyboardAlwaysVisible = this.prefs.getBoolean("alwaysvisible", false);
+        if (this.keyboardAlwaysVisible) {
+            LayoutParams layoutParams = new LayoutParams(-1, -1);
+            layoutParams.addRule(2, R.id.keyboard_group);
+            this.pager.setLayoutParams(layoutParams);
+            this.keyboardGroup.setVisibility(0);
+        }
+        this.mKeyboardButton = (ImageView) findViewById(R.id.button_keyboard);
+        this.mKeyboardButton.setOnClickListener(new OnClickListener() {
+            public void onClick(View view) {
+                View terminal = ConsoleActivity.this.adapter.getCurrentTerminalView();
+                if (terminal != null) {
+                    ((InputMethodManager) ConsoleActivity.this.getSystemService("input_method")).toggleSoftInputFromWindow(terminal.getApplicationWindowToken(), 2, 0);
+                    terminal.requestFocus();
+                    ConsoleActivity.this.hideEmulatedKeys();
+                }
+            }
+        });
+        findViewById(R.id.button_ctrl).setOnClickListener(this.emulatedKeysListener);
+        findViewById(R.id.button_esc).setOnClickListener(this.emulatedKeysListener);
+        findViewById(R.id.button_tab).setOnClickListener(this.emulatedKeysListener);
+        addKeyRepeater(findViewById(R.id.button_up));
+        addKeyRepeater(findViewById(R.id.button_up));
+        addKeyRepeater(findViewById(R.id.button_down));
+        addKeyRepeater(findViewById(R.id.button_left));
+        addKeyRepeater(findViewById(R.id.button_right));
+        findViewById(R.id.button_home).setOnClickListener(this.emulatedKeysListener);
+        findViewById(R.id.button_end).setOnClickListener(this.emulatedKeysListener);
+        findViewById(R.id.button_pgup).setOnClickListener(this.emulatedKeysListener);
+        findViewById(R.id.button_pgdn).setOnClickListener(this.emulatedKeysListener);
+        findViewById(R.id.button_f1).setOnClickListener(this.emulatedKeysListener);
+        findViewById(R.id.button_f2).setOnClickListener(this.emulatedKeysListener);
+        findViewById(R.id.button_f3).setOnClickListener(this.emulatedKeysListener);
+        findViewById(R.id.button_f4).setOnClickListener(this.emulatedKeysListener);
+        findViewById(R.id.button_f5).setOnClickListener(this.emulatedKeysListener);
+        findViewById(R.id.button_f6).setOnClickListener(this.emulatedKeysListener);
+        findViewById(R.id.button_f7).setOnClickListener(this.emulatedKeysListener);
+        findViewById(R.id.button_f8).setOnClickListener(this.emulatedKeysListener);
+        findViewById(R.id.button_f9).setOnClickListener(this.emulatedKeysListener);
+        findViewById(R.id.button_f10).setOnClickListener(this.emulatedKeysListener);
+        findViewById(R.id.button_f11).setOnClickListener(this.emulatedKeysListener);
+        findViewById(R.id.button_f12).setOnClickListener(this.emulatedKeysListener);
+        this.actionBar = getSupportActionBar();
+        if (this.actionBar != null) {
+            this.actionBar.setDisplayHomeAsUpEnabled(true);
+            if (this.titleBarHide) {
+                this.actionBar.hide();
+            }
+            this.actionBar.addOnMenuVisibilityListener(new OnMenuVisibilityListener() {
+                public void onMenuVisibilityChanged(boolean isVisible) {
+                    ConsoleActivity.this.inActionBarMenu = isVisible;
+                    if (!isVisible) {
+                        ConsoleActivity.this.hideEmulatedKeys();
+                    }
+                }
+            });
+        }
+        final HorizontalScrollView keyboardScroll = (HorizontalScrollView) findViewById(R.id.keyboard_hscroll);
+        if (!this.hardKeyboard) {
+            showEmulatedKeys(false);
+            keyboardScroll.postDelayed(new Runnable() {
+                public void run() {
+                    final int xscroll = ConsoleActivity.this.findViewById(R.id.button_f12).getRight();
+                    keyboardScroll.smoothScrollBy(xscroll, 0);
+                    keyboardScroll.postDelayed(new Runnable() {
+                        public void run() {
+                            keyboardScroll.smoothScrollBy(-xscroll, 0);
+                        }
+                    }, 500);
+                }
+            }, 500);
+        }
+        keyboardScroll.setOnTouchListener(new OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case 1:
+                        v.performClick();
+                        return true;
+                    case 2:
+                        ConsoleActivity.this.autoHideEmulatedKeys();
+                        break;
+                }
+                return false;
+            }
+        });
+        this.tabs = (TabLayout) findViewById(R.id.tabs);
+        if (this.tabs != null) {
+            setupTabLayoutWithViewPager();
+        }
+        this.pager.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                ConsoleActivity.this.showEmulatedKeys(true);
+            }
+        });
+        this.contentView = findViewById(16908290);
+        this.contentView.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+            public void onGlobalLayout() {
+                Rect r = new Rect();
+                ConsoleActivity.this.contentView.getWindowVisibleDisplayFrame(r);
+                int screenHeight = ConsoleActivity.this.contentView.getRootView().getHeight();
+                if (((double) (screenHeight - r.bottom)) > ((double) screenHeight) * 0.15d) {
+                    ConsoleActivity.this.mKeyboardButton.setImageResource(R.drawable.ic_keyboard_hide);
+                    ConsoleActivity.this.mKeyboardButton.setContentDescription(ConsoleActivity.this.getResources().getText(R.string.image_description_hide_keyboard));
+                    return;
+                }
+                ConsoleActivity.this.mKeyboardButton.setImageResource(R.drawable.ic_keyboard);
+                ConsoleActivity.this.mKeyboardButton.setContentDescription(ConsoleActivity.this.getResources().getText(R.string.image_description_show_keyboard));
+            }
+        });
+    }

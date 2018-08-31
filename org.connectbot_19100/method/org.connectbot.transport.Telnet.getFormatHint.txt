@@ -1,0 +1,3 @@
+    public static String getFormatHint(Context context) {
+        return String.format("%s:%s", new Object[]{context.getString(R.string.format_hostname), context.getString(R.string.format_port)});
+    }

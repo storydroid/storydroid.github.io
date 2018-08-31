@@ -1,0 +1,9 @@
+    public void onConnectivityRestored() {
+        Thread t = new Thread() {
+            public void run() {
+                TerminalManager.this.reconnectPending();
+            }
+        };
+        t.setName("Reconnector");
+        t.start();
+    }

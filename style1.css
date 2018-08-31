@@ -1,0 +1,107 @@
+     .link {
+         fill: none;
+         stroke: #666;
+         stroke-width: 1.5px;
+     }
+     
+     #licensing {
+         fill: green;
+     }
+     
+     .link.licensing {
+         stroke: green;
+     }
+     
+     .link.resolved {
+         stroke-dasharray: 0, 2 1;
+     }
+     
+     circle {
+         fill: #ccc;
+         stroke: #333;
+         stroke-width: 1.5px;
+     }
+     
+     text {
+         font: 10px sans-serif;
+         pointer-events: none;
+         text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+     }
+     
+     @import url(http://fonts.googleapis.com/css?family=Source+Code+Pro:400,600);
+     body {
+         font-family: "Source Code Pro", Consolas, monaco, monospace;
+         line-height: 160%;
+         font-size: 16px;
+         margin: 0;
+     }
+     
+     path.link {
+         fill: none;
+         stroke-width: 2px;
+     }
+     
+     .node:not(:hover) .nodetext {
+         display: none;
+     }
+     
+     h1 {
+         font-size: 20px;
+         margin-left: 0px;
+         text-transform: uppercase;
+         font-weight: normal;
+     }
+     
+     h2 {
+         font-size: 14px;
+         margin-left: 0px;
+         font-weight: normal;
+     }
+     
+     pre {
+         font-size: 12px;
+         margin-left: 0px;
+         font-weight: normal;
+         width: 490px;
+     }
+     
+     h3 {
+         font-size: 12px;
+         margin-left: 0px;
+         font-weight: normal;
+     }
+     
+     header {
+         padding: 18px;
+         position: absolute;
+         top: 0;
+         left: 0;
+     }
+     
+     a:link {
+         color: #EE3124;
+         text-decoration: none;
+     }
+     
+     a:visited {
+         color: #EE3124;
+     }
+     
+     a:hover {
+         color: #A4CD39;
+         text-decoration: underline;
+     }
+     
+     a:active {
+         color: #EE3124;
+     }
+     
+     #container {
+         display: flex;
+     }
+    
+    .zoom {
+        transition: .5s ease-in;
+        width: 150px;
+        height: 200px;
+    }

@@ -1,0 +1,6 @@
+        public int getCount() {
+            if (ConsoleActivity.this.bound != null) {
+                return ConsoleActivity.this.bound.getBridges().size();
+            }
+            return 0;
+        }

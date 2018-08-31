@@ -1,0 +1,11 @@
+    private void reconnectPending() {
+        synchronized (this.mPendingReconnect) {
+            for (WeakReference<TerminalBridge> ref : this.mPendingReconnect) {
+                TerminalBridge bridge = (TerminalBridge) ref.get();
+                if (bridge != null) {
+                    bridge.startConnection();
+                }
+            }
+            this.mPendingReconnect.clear();
+        }
+    }

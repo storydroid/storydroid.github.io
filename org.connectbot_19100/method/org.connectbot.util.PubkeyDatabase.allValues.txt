@@ -1,0 +1,12 @@
+    public List<CharSequence> allValues(String column) {
+        List<CharSequence> list = new LinkedList();
+        Cursor c = this.mDb.query("pubkeys", new String[]{"_id", column}, null, null, null, null, "_id ASC");
+        if (c != null) {
+            int COL = c.getColumnIndexOrThrow(column);
+            while (c.moveToNext()) {
+                list.add(c.getString(COL));
+            }
+            c.close();
+        }
+        return list;
+    }

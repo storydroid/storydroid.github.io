@@ -1,0 +1,3 @@
+    private void requestActionBar() {
+        supportRequestWindowFeature(9);
+    }

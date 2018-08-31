@@ -1,0 +1,10 @@
+    public int[] getDefaultColorsForScheme(int scheme) {
+        int[] colors = new int[]{7, 0};
+        Cursor c = this.mDb.query("colorDefaults", new String[]{"fg", "bg"}, "scheme = ?", new String[]{String.valueOf(scheme)}, null, null, null);
+        if (c.moveToFirst()) {
+            colors[0] = c.getInt(0);
+            colors[1] = c.getInt(1);
+        }
+        c.close();
+        return colors;
+    }

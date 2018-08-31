@@ -1,0 +1,19 @@
+    public void onStart() {
+        super.onStart();
+        bindService(new Intent(this, TerminalManager.class), this.mTerminalConnection, 1);
+        final HostEditorFragment fragment = (HostEditorFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if (CharsetHolder.isInitialized()) {
+            fragment.setCharsetData(CharsetHolder.getCharsetData());
+        } else {
+            new AsyncTask<Void, Void, Void>() {
+                protected Void doInBackground(Void... unused) {
+                    CharsetHolder.initialize();
+                    return null;
+                }
+
+                protected void onPostExecute(Void unused) {
+                    fragment.setCharsetData(CharsetHolder.getCharsetData());
+                }
+            }.execute(new Void[0]);
+        }
+    }

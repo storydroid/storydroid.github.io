@@ -1,0 +1,3 @@
+    public String getColor() {
+        return this.color;
+    }

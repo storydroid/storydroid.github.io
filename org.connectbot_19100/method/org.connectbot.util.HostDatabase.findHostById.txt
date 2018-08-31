@@ -1,0 +1,3 @@
+    public HostBean findHostById(long hostId) {
+        return getFirstHostBean(this.mDb.query("hosts", null, "_id = ?", new String[]{String.valueOf(hostId)}, null, null, null));
+    }

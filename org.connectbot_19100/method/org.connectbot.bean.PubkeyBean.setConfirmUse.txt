@@ -1,0 +1,3 @@
+    public void setConfirmUse(boolean confirmUse) {
+        this.confirmUse = confirmUse;
+    }

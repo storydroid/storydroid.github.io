@@ -1,0 +1,3 @@
+    public void setPubkeyId(long pubkeyId) {
+        this.pubkeyId = pubkeyId;
+    }

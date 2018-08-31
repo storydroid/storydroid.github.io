@@ -1,0 +1,3 @@
+    protected static void addIndexName(String indexName) {
+        mIndexNames.add(indexName);
+    }

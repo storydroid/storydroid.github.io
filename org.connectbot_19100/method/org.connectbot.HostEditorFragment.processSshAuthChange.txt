@@ -1,0 +1,16 @@
+    private void processSshAuthChange() {
+        this.mUseSshConfirmationItem.setVisibility(this.mUseSshAuthSwitch.isChecked() ? 0 : 8);
+        if (this.mUseSshAuthSwitch.isChecked()) {
+            String string;
+            HostBean hostBean = this.mHost;
+            if (this.mUseSshConfirmationCheckbox.isChecked()) {
+                string = this.mSshAuthValues.getString(1);
+            } else {
+                string = this.mSshAuthValues.getString(2);
+            }
+            hostBean.setUseAuthAgent(string);
+        } else {
+            this.mHost.setUseAuthAgent(this.mSshAuthValues.getString(0));
+        }
+        handleHostChange();
+    }

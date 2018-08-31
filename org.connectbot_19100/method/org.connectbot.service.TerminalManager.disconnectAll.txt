@@ -1,0 +1,17 @@
+    public void disconnectAll(boolean immediate, boolean excludeLocal) {
+        TerminalBridge[] tmpBridges = null;
+        synchronized (this.bridges) {
+            if (this.bridges.size() > 0) {
+                tmpBridges = (TerminalBridge[]) this.bridges.toArray(new TerminalBridge[this.bridges.size()]);
+            }
+        }
+        if (tmpBridges != null) {
+            int i = 0;
+            while (i < tmpBridges.length) {
+                if (!excludeLocal || tmpBridges[i].isUsingNetwork()) {
+                    tmpBridges[i].dispatchDisconnect(immediate);
+                }
+                i++;
+            }
+        }
+    }

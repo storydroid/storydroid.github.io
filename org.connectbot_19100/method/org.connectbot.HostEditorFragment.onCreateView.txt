@@ -1,0 +1,282 @@
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        String oldQuickConnect;
+        int i;
+        boolean z = true;
+        View view = inflater.inflate(R.layout.fragment_host_editor, container, false);
+        this.mTransportItem = view.findViewById(R.id.protocol_item);
+        this.mTransportItem.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                PopupMenu menu = new PopupMenu(HostEditorFragment.this.getActivity(), v);
+                for (String name : TransportFactory.getTransportNames()) {
+                    menu.getMenu().add(name);
+                }
+                menu.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        HostEditorFragment.this.setTransportType(item.getTitle().toString(), true);
+                        return true;
+                    }
+                });
+                menu.show();
+            }
+        });
+        this.mTransportText = (TextView) view.findViewById(R.id.protocol_text);
+        this.mQuickConnectContainer = (TextInputLayout) view.findViewById(R.id.quickconnect_field_container);
+        this.mQuickConnectField = (EditText) view.findViewById(R.id.quickconnect_field);
+        if (savedInstanceState == null) {
+            oldQuickConnect = null;
+        } else {
+            oldQuickConnect = savedInstanceState.getString("quickConnectString");
+        }
+        EditText editText = this.mQuickConnectField;
+        if (oldQuickConnect == null) {
+            oldQuickConnect = this.mHost.toString();
+        }
+        editText.setText(oldQuickConnect);
+        this.mQuickConnectField.addTextChangedListener(new TextWatcher() {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            public void afterTextChanged(Editable s) {
+                if (!HostEditorFragment.this.mUriFieldEditInProgress) {
+                    HostEditorFragment.this.applyQuickConnectString(s.toString(), HostEditorFragment.this.mHost.getProtocol());
+                    HostEditorFragment.this.mUriFieldEditInProgress = true;
+                    HostEditorFragment.this.mUsernameField.setText(HostEditorFragment.this.mHost.getUsername());
+                    HostEditorFragment.this.mHostnameField.setText(HostEditorFragment.this.mHost.getHostname());
+                    HostEditorFragment.this.mPortField.setText(Integer.toString(HostEditorFragment.this.mHost.getPort()));
+                    HostEditorFragment.this.mUriFieldEditInProgress = false;
+                }
+            }
+        });
+        this.mExpandCollapseButton = (ImageButton) view.findViewById(R.id.expand_collapse_button);
+        this.mExpandCollapseButton.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                HostEditorFragment.this.setUriPartsContainerExpanded(!HostEditorFragment.this.mIsUriEditorExpanded);
+            }
+        });
+        this.mUriPartsContainer = view.findViewById(R.id.uri_parts_container);
+        this.mUsernameContainer = view.findViewById(R.id.username_field_container);
+        this.mUsernameField = (EditText) view.findViewById(R.id.username_edit_text);
+        this.mUsernameField.setText(this.mHost.getUsername());
+        this.mUsernameField.addTextChangedListener(new HostTextFieldWatcher("username"));
+        this.mHostnameContainer = view.findViewById(R.id.hostname_field_container);
+        this.mHostnameField = (EditText) view.findViewById(R.id.hostname_edit_text);
+        this.mHostnameField.setText(this.mHost.getHostname());
+        this.mHostnameField.addTextChangedListener(new HostTextFieldWatcher("hostname"));
+        this.mPortContainer = view.findViewById(R.id.port_field_container);
+        this.mPortField = (EditText) view.findViewById(R.id.port_edit_text);
+        this.mPortField.setText(Integer.toString(this.mHost.getPort()));
+        this.mPortField.addTextChangedListener(new HostTextFieldWatcher("port"));
+        this.mNicknameItem = view.findViewById(R.id.nickname_item);
+        setTransportType(this.mHost.getProtocol(), false);
+        this.mNicknameField = (EditText) view.findViewById(R.id.nickname_field);
+        this.mNicknameField.setText(this.mHost.getNickname());
+        this.mNicknameField.addTextChangedListener(new HostTextFieldWatcher("nickname"));
+        this.mColorItem = view.findViewById(R.id.color_item);
+        this.mColorItem.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                PopupMenu menu = new PopupMenu(HostEditorFragment.this.getActivity(), v);
+                for (int i = 0; i < HostEditorFragment.this.mColorNames.length(); i++) {
+                    menu.getMenu().add(HostEditorFragment.this.mColorNames.getText(i));
+                }
+                menu.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        for (int i = 0; i < HostEditorFragment.this.mColorNames.length(); i++) {
+                            if (item.getTitle().toString().equals(HostEditorFragment.this.mColorNames.getText(i).toString())) {
+                                HostEditorFragment.this.mHost.setColor(HostEditorFragment.this.mColorValues.getText(i).toString());
+                                HostEditorFragment.this.mColorText.setText(HostEditorFragment.this.mColorNames.getText(i));
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
+                });
+                menu.show();
+            }
+        });
+        this.mColorText = (TextView) view.findViewById(R.id.color_text);
+        for (i = 0; i < this.mColorValues.length(); i++) {
+            if (this.mColorValues.getText(i).toString().equals(this.mHost.getColor())) {
+                this.mColorText.setText(this.mColorNames.getText(i));
+                break;
+            }
+        }
+        this.mFontSizeText = (EditText) view.findViewById(R.id.font_size_text);
+        this.mFontSizeText.setText(Integer.toString(this.mHost.getFontSize()));
+        this.mFontSizeText.addTextChangedListener(new HostTextFieldWatcher("fontsize"));
+        this.mFontSizeText.setOnFocusChangeListener(new OnFocusChangeListener() {
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    HostEditorFragment.this.mFontSizeText.setText(Integer.toString(HostEditorFragment.this.mHost.getFontSize()));
+                }
+            }
+        });
+        this.mFontSizeSeekBar = (SeekBar) view.findViewById(R.id.font_size_bar);
+        this.mFontSizeSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                HostEditorFragment.this.setFontSize(progress + 8);
+            }
+
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                HostEditorFragment.this.mFontSizeText.clearFocus();
+            }
+
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
+        this.mFontSizeSeekBar.setProgress(this.mHost.getFontSize() - 8);
+        this.mPubkeyItem = view.findViewById(R.id.pubkey_item);
+        this.mPubkeyItem.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                PopupMenu menu = new PopupMenu(HostEditorFragment.this.getActivity(), v);
+                Iterator it = HostEditorFragment.this.mPubkeyNames.iterator();
+                while (it.hasNext()) {
+                    menu.getMenu().add((String) it.next());
+                }
+                menu.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        for (int i = 0; i < HostEditorFragment.this.mPubkeyNames.size(); i++) {
+                            if (((String) HostEditorFragment.this.mPubkeyNames.get(i)).equals(item.getTitle())) {
+                                HostEditorFragment.this.mHost.setPubkeyId(Long.parseLong((String) HostEditorFragment.this.mPubkeyValues.get(i)));
+                                HostEditorFragment.this.mPubkeyText.setText((CharSequence) HostEditorFragment.this.mPubkeyNames.get(i));
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
+                });
+                menu.show();
+            }
+        });
+        this.mPubkeyText = (TextView) view.findViewById(R.id.pubkey_text);
+        for (i = 0; i < this.mPubkeyValues.size(); i++) {
+            if (this.mHost.getPubkeyId() == Long.parseLong((String) this.mPubkeyValues.get(i))) {
+                this.mPubkeyText.setText((CharSequence) this.mPubkeyNames.get(i));
+                break;
+            }
+        }
+        this.mDelKeyItem = view.findViewById(R.id.delkey_item);
+        this.mDelKeyItem.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                PopupMenu menu = new PopupMenu(HostEditorFragment.this.getActivity(), v);
+                for (int i = 0; i < HostEditorFragment.this.mDelKeyNames.length(); i++) {
+                    menu.getMenu().add(HostEditorFragment.this.mDelKeyNames.getText(i));
+                }
+                menu.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        for (int i = 0; i < HostEditorFragment.this.mDelKeyNames.length(); i++) {
+                            if (HostEditorFragment.this.mDelKeyNames.getText(i).equals(item.getTitle())) {
+                                HostEditorFragment.this.mHost.setDelKey(HostEditorFragment.this.mDelKeyValues.getText(i).toString());
+                                HostEditorFragment.this.mDelKeyText.setText(HostEditorFragment.this.mDelKeyNames.getText(i));
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
+                });
+                menu.show();
+            }
+        });
+        this.mDelKeyText = (TextView) view.findViewById(R.id.delkey_text);
+        for (i = 0; i < this.mDelKeyValues.length(); i++) {
+            if (this.mDelKeyValues.getText(i).toString().equals(this.mHost.getDelKey())) {
+                this.mDelKeyText.setText(this.mDelKeyNames.getText(i));
+                break;
+            }
+        }
+        this.mEncodingItem = view.findViewById(R.id.encoding_item);
+        this.mEncodingItem.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                PopupMenu menu = new PopupMenu(HostEditorFragment.this.getActivity(), v);
+                for (String displayName : HostEditorFragment.this.mCharsetData.keySet()) {
+                    menu.getMenu().add(displayName);
+                }
+                menu.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        for (String displayName : HostEditorFragment.this.mCharsetData.keySet()) {
+                            if (displayName.equals(item.getTitle())) {
+                                HostEditorFragment.this.mHost.setEncoding((String) HostEditorFragment.this.mCharsetData.get(displayName));
+                                HostEditorFragment.this.mEncodingText.setText(displayName);
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
+                });
+                menu.show();
+            }
+        });
+        this.mEncodingText = (TextView) view.findViewById(R.id.encoding_text);
+        this.mUseSshAuthItem = view.findViewById(R.id.use_ssh_auth_item);
+        this.mUseSshAuthItem.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                HostEditorFragment.this.mUseSshAuthSwitch.toggle();
+            }
+        });
+        this.mUseSshAuthSwitch = (SwitchCompat) view.findViewById(R.id.use_ssh_auth_switch);
+        SwitchCompat switchCompat = this.mUseSshAuthSwitch;
+        boolean z2 = (this.mHost.getUseAuthAgent() == null || this.mHost.getUseAuthAgent().equals(this.mSshAuthValues.getString(0))) ? false : true;
+        switchCompat.setChecked(z2);
+        this.mUseSshAuthSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                HostEditorFragment.this.processSshAuthChange();
+            }
+        });
+        this.mUseSshConfirmationItem = view.findViewById(R.id.ssh_auth_confirmation_item);
+        this.mUseSshConfirmationItem.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                HostEditorFragment.this.mUseSshConfirmationCheckbox.toggle();
+            }
+        });
+        this.mUseSshConfirmationCheckbox = (AppCompatCheckBox) view.findViewById(R.id.ssh_auth_confirmation_checkbox);
+        AppCompatCheckBox appCompatCheckBox = this.mUseSshConfirmationCheckbox;
+        if (this.mHost.getUseAuthAgent() == null || !this.mHost.getUseAuthAgent().equals(this.mSshAuthValues.getString(1))) {
+            z = false;
+        }
+        appCompatCheckBox.setChecked(z);
+        this.mUseSshConfirmationCheckbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                HostEditorFragment.this.processSshAuthChange();
+            }
+        });
+        processSshAuthChange();
+        this.mCompressionSwitch = (CheckableMenuItem) view.findViewById(R.id.compression_item);
+        this.mCompressionSwitch.setChecked(this.mHost.getCompression());
+        this.mCompressionSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                HostEditorFragment.this.mHost.setCompression(isChecked);
+                HostEditorFragment.this.handleHostChange();
+            }
+        });
+        this.mStartShellSwitch = (CheckableMenuItem) view.findViewById(R.id.start_shell_item);
+        this.mStartShellSwitch.setChecked(this.mHost.getWantSession());
+        this.mStartShellSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                HostEditorFragment.this.mHost.setWantSession(isChecked);
+                HostEditorFragment.this.handleHostChange();
+            }
+        });
+        this.mStayConnectedSwitch = (CheckableMenuItem) view.findViewById(R.id.stay_connected_item);
+        this.mStayConnectedSwitch.setChecked(this.mHost.getStayConnected());
+        this.mStayConnectedSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                HostEditorFragment.this.mHost.setStayConnected(isChecked);
+                HostEditorFragment.this.handleHostChange();
+            }
+        });
+        this.mCloseOnDisconnectSwitch = (CheckableMenuItem) view.findViewById(R.id.close_on_disconnect_item);
+        this.mCloseOnDisconnectSwitch.setChecked(this.mHost.getQuickDisconnect());
+        this.mCloseOnDisconnectSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                HostEditorFragment.this.mHost.setQuickDisconnect(isChecked);
+                HostEditorFragment.this.handleHostChange();
+            }
+        });
+        this.mPostLoginAutomationField = (EditText) view.findViewById(R.id.post_login_automation_field);
+        this.mPostLoginAutomationField.setText(this.mHost.getPostLogin());
+        this.mPostLoginAutomationField.addTextChangedListener(new HostTextFieldWatcher("postlogin"));
+        setUriPartsContainerExpanded(this.mIsUriEditorExpanded);
+        return view;
+    }

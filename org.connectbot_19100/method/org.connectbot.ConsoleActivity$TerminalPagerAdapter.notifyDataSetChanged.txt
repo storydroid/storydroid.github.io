@@ -1,0 +1,7 @@
+        public void notifyDataSetChanged() {
+            super.notifyDataSetChanged();
+            if (ConsoleActivity.this.tabs != null) {
+                ConsoleActivity.this.toolbar.setVisibility(getCount() > 1 ? 0 : 8);
+                ConsoleActivity.this.tabs.setTabsFromPagerAdapter(this);
+            }
+        }

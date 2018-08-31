@@ -1,0 +1,3 @@
+    public List<PubkeyBean> allPubkeys() {
+        return getPubkeys(null, null);
+    }

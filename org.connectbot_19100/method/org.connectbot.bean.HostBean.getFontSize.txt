@@ -1,0 +1,3 @@
+    public int getFontSize() {
+        return this.fontSize;
+    }

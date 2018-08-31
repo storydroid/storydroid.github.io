@@ -1,0 +1,7 @@
+    protected View findCurrentView(int id) {
+        View view = this.pager.findViewWithTag(this.adapter.getBridgeAtPosition(this.pager.getCurrentItem()));
+        if (view == null) {
+            return null;
+        }
+        return view.findViewById(id);
+    }

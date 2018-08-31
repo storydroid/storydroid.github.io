@@ -1,0 +1,4 @@
+            public boolean onMenuItemClick(MenuItem item) {
+                ConsoleActivity.this.adapter.getCurrentTerminalView().bridge.dispatchDisconnect(true);
+                return true;
+            }

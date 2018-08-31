@@ -1,0 +1,4 @@
+                public boolean onMenuItemClick(MenuItem item) {
+                    bridge.dispatchDisconnect(true);
+                    return true;
+                }

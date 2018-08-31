@@ -1,0 +1,4 @@
+    private void editColor(int colorNumber) {
+        this.mCurrentColor = colorNumber;
+        new UberColorPickerDialog(this, this, this.mColorList[colorNumber]).show();
+    }

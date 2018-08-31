@@ -1,0 +1,8 @@
+    private boolean importExistingKey() {
+        Uri sdcard = Uri.fromFile(Environment.getExternalStorageDirectory());
+        String pickerTitle = getString(R.string.pubkey_list_pick);
+        if ((VERSION.SDK_INT >= 19 && importExistingKeyKitKat()) || importExistingKeyOpenIntents(sdcard, pickerTitle) || importExistingKeyAndExplorer(sdcard, pickerTitle) || pickFileSimple()) {
+            return true;
+        }
+        return false;
+    }

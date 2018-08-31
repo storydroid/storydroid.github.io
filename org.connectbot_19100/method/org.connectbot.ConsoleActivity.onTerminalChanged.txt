@@ -1,0 +1,9 @@
+    private void onTerminalChanged() {
+        View terminalNameOverlay = findCurrentView(R.id.terminal_name_overlay);
+        if (terminalNameOverlay != null) {
+            terminalNameOverlay.startAnimation(this.fade_out_delayed);
+        }
+        updateDefault();
+        updatePromptVisible();
+        ActivityCompat.invalidateOptionsMenu(this);
+    }

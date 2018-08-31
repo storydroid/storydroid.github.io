@@ -1,0 +1,23 @@
+        public boolean onTouch(View v, MotionEvent event) {
+            switch (event.getAction()) {
+                case 0:
+                    this.mDown = false;
+                    this.mHandler.postDelayed(this, 500);
+                    this.mView.setPressed(true);
+                    return true;
+                case 1:
+                    this.mHandler.removeCallbacks(this);
+                    this.mView.setPressed(false);
+                    if (this.mDown) {
+                        return true;
+                    }
+                    this.mView.performClick();
+                    return true;
+                case 3:
+                    this.mHandler.removeCallbacks(this);
+                    this.mView.setPressed(false);
+                    return true;
+                default:
+                    return false;
+            }
+        }

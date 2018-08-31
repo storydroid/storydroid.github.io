@@ -1,0 +1,3 @@
+    protected NotificationManager getNotificationManager(Context context) {
+        return (NotificationManager) context.getSystemService("notification");
+    }

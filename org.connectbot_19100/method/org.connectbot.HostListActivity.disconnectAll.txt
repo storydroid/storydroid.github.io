@@ -1,0 +1,21 @@
+    private void disconnectAll() {
+        if (this.bound == null) {
+            this.waitingForDisconnectAll = true;
+        } else {
+            new Builder(this, R.style.AlertDialogTheme).setMessage(getString(R.string.disconnect_all_message)).setPositiveButton(R.string.disconnect_all_pos, new OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    HostListActivity.this.bound.disconnectAll(true, false);
+                    HostListActivity.this.waitingForDisconnectAll = false;
+                    HostListActivity.this.setIntent(new Intent());
+                    if (HostListActivity.this.closeOnDisconnectAll) {
+                        HostListActivity.this.finish();
+                    }
+                }
+            }).setNegativeButton(R.string.disconnect_all_neg, new OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    HostListActivity.this.waitingForDisconnectAll = false;
+                    HostListActivity.this.setIntent(new Intent());
+                }
+            }).create().show();
+        }
+    }

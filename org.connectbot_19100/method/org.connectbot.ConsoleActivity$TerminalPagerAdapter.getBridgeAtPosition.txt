@@ -1,0 +1,10 @@
+        public TerminalBridge getBridgeAtPosition(int position) {
+            if (ConsoleActivity.this.bound == null) {
+                return null;
+            }
+            ArrayList<TerminalBridge> bridges = ConsoleActivity.this.bound.getBridges();
+            if (position < 0 || position >= bridges.size()) {
+                return null;
+            }
+            return (TerminalBridge) bridges.get(position);
+        }

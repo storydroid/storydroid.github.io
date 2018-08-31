@@ -1,0 +1,22 @@
+    public static HostBean fromContentValues(ContentValues values) {
+        HostBean host = new HostBean();
+        host.setNickname(values.getAsString("nickname"));
+        host.setProtocol(values.getAsString("protocol"));
+        host.setUsername(values.getAsString("username"));
+        host.setHostname(values.getAsString("hostname"));
+        host.setPort(values.getAsInteger("port").intValue());
+        host.setLastConnect(values.getAsLong("lastconnect").longValue());
+        host.setColor(values.getAsString("color"));
+        host.setUseKeys(Boolean.valueOf(values.getAsString("usekeys")).booleanValue());
+        host.setUseAuthAgent(values.getAsString("useauthagent"));
+        host.setPostLogin(values.getAsString("postlogin"));
+        host.setPubkeyId(values.getAsLong("pubkeyid").longValue());
+        host.setWantSession(Boolean.valueOf(values.getAsString("wantsession")).booleanValue());
+        host.setDelKey(values.getAsString("delkey"));
+        host.setFontSize(values.getAsInteger("fontsize").intValue());
+        host.setCompression(Boolean.valueOf(values.getAsString("compression")).booleanValue());
+        host.setEncoding(values.getAsString("encoding"));
+        host.setStayConnected(values.getAsBoolean("stayconnected").booleanValue());
+        host.setQuickDisconnect(values.getAsBoolean("quickdisconnect").booleanValue());
+        return host;
+    }

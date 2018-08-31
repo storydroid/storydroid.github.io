@@ -1,0 +1,6 @@
+    public static ConnectionNotifier getInstance() {
+        if (PreferenceConstants.PRE_ECLAIR) {
+            return Holder.sInstance;
+        }
+        return Holder.sInstance;
+    }

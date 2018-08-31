@@ -1,0 +1,13 @@
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        try {
+            addPreferencesFromResource(R.xml.preferences);
+        } catch (ClassCastException e) {
+            Log.e("CB.Settings", "Shared preferences are corrupt! Resetting to default values.");
+            Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
+            editor.clear();
+            editor.commit();
+            PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
+            addPreferencesFromResource(R.xml.preferences);
+        }
+    }

@@ -1,0 +1,10 @@
+    private void showEmulatedKeys(boolean showActionBar) {
+        if (this.keyboardGroup.getVisibility() == 8) {
+            this.keyboardGroup.startAnimation(this.keyboard_fade_in);
+            this.keyboardGroup.setVisibility(0);
+        }
+        if (showActionBar) {
+            this.actionBar.show();
+        }
+        autoHideEmulatedKeys();
+    }

@@ -1,0 +1,31 @@
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        Log.d("CB.ConsoleActivity", "onNewIntent called");
+        this.requested = intent.getData();
+        if (this.requested == null) {
+            Log.e("CB.ConsoleActivity", "Got null intent data in onNewIntent()");
+        } else if (this.bound == null) {
+            Log.e("CB.ConsoleActivity", "We're not bound in onNewIntent()");
+        } else {
+            TerminalBridge requestedBridge = this.bound.getConnectedBridge(this.requested.getFragment());
+            int requestedIndex = 0;
+            synchronized (this.pager) {
+                if (requestedBridge == null) {
+                    try {
+                        Log.d("CB.ConsoleActivity", String.format("We couldnt find an existing bridge with URI=%s (nickname=%s),so creating one now", new Object[]{this.requested.toString(), this.requested.getFragment()}));
+                        this.bound.openConnection(this.requested);
+                        this.adapter.notifyDataSetChanged();
+                        requestedIndex = this.adapter.getCount();
+                    } catch (Exception e) {
+                        Log.e("CB.ConsoleActivity", "Problem while trying to create new requested bridge from URI", e);
+                        return;
+                    }
+                }
+                int flipIndex = this.bound.getBridges().indexOf(requestedBridge);
+                if (flipIndex > 0) {
+                    requestedIndex = flipIndex;
+                }
+                setDisplayedTerminal(requestedIndex);
+            }
+        }
+    }

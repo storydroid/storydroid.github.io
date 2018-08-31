@@ -1,0 +1,13 @@
+        resetBitDefaults();
+        switch (newKeyType) {
+            case RSA:
+            case EC:
+                setAllowBitStrengthChange(true);
+                return;
+            case DSA:
+            case ED25519:
+                setAllowBitStrengthChange(false);
+                return;
+            default:
+                throw new AssertionError("Impossible key type encountered");
+        }

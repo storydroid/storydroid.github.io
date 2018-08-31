@@ -1,0 +1,6 @@
+    public void onRebind(Intent intent) {
+        super.onRebind(intent);
+        Log.i("CB.TerminalManager", "Someone rebound to TerminalManager with " + this.bridges.size() + " bridges active");
+        keepServiceAlive();
+        setResizeAllowed(true);
+    }

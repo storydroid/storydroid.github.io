@@ -1,0 +1,4 @@
+        setKeyType(KeyType.RSA);
+        if (Security.getProviders("KeyPairGenerator.EC") == null) {
+            ((RadioButton) findViewById(R.id.ec)).setEnabled(false);
+        }

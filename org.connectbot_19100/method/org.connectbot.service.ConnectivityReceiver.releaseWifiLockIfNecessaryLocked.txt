@@ -1,0 +1,5 @@
+    private void releaseWifiLockIfNecessaryLocked() {
+        if (this.mNetworkRef == 0 && this.mWifiLock.isHeld()) {
+            this.mWifiLock.release();
+        }
+    }

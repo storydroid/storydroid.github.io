@@ -1,0 +1,6 @@
+        enableMediaPlayer();
+        if (this.res.getConfiguration().hardKeyboardHidden == 2) {
+            z = true;
+        } else {
+            z = false;
+        }

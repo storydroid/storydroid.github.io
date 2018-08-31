@@ -1,0 +1,20 @@
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView((int) R.layout.act_colors);
+        this.mColorScheme = 0;
+        this.mHostDb = HostDatabase.get(this);
+        this.mColorList = this.mHostDb.getColorsForScheme(this.mColorScheme);
+        this.mDefaultColors = this.mHostDb.getDefaultColorsForScheme(this.mColorScheme);
+        this.mColorGrid = (GridView) findViewById(R.id.color_grid);
+        this.mColorGrid.setAdapter(new ColorsAdapter(this, true));
+        this.mColorGrid.setOnItemClickListener(this);
+        this.mColorGrid.setSelection(0);
+        this.mFgSpinner = (Spinner) findViewById(R.id.fg);
+        this.mFgSpinner.setAdapter(new ColorsAdapter(false, R.string.colors_fg_label));
+        this.mFgSpinner.setSelection(this.mDefaultColors[0]);
+        this.mFgSpinner.setOnItemSelectedListener(this);
+        this.mBgSpinner = (Spinner) findViewById(R.id.bg);
+        this.mBgSpinner.setAdapter(new ColorsAdapter(false, R.string.color_bg_label));
+        this.mBgSpinner.setSelection(this.mDefaultColors[1]);
+        this.mBgSpinner.setOnItemSelectedListener(this);
+    }

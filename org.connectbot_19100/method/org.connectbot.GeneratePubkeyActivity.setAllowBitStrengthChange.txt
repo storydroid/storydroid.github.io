@@ -1,0 +1,4 @@
+    private void setAllowBitStrengthChange(boolean enabled) {
+        this.bitsSlider.setEnabled(enabled);
+        this.bitsText.setEnabled(enabled);
+    }

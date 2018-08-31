@@ -1,0 +1,20 @@
+    static PublicKey recoverPublicKey(KeyFactory kf, PrivateKey priv) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        if (priv instanceof RSAPrivateCrtKey) {
+            RSAPrivateCrtKey rsaPriv = (RSAPrivateCrtKey) priv;
+            return kf.generatePublic(new RSAPublicKeySpec(rsaPriv.getModulus(), rsaPriv.getPublicExponent()));
+        } else if (priv instanceof RSAPrivateKey) {
+            return kf.generatePublic(new RSAPublicKeySpec(((RSAPrivateKey) priv).getModulus(), getRSAPublicExponentFromPkcs8Encoded(priv.getEncoded())));
+        } else if (priv instanceof DSAPrivateKey) {
+            DSAPrivateKey dsaPriv = (DSAPrivateKey) priv;
+            DSAParams params = dsaPriv.getParams();
+            return kf.generatePublic(new DSAPublicKeySpec(params.getG().modPow(dsaPriv.getX(), params.getP()), params.getP(), params.getQ(), params.getG()));
+        } else if (priv instanceof ECPrivateKey) {
+            ECPrivateKey ecPriv = (ECPrivateKey) priv;
+            ECParameterSpec params2 = ecPriv.getParams();
+            ECPoint generator = params2.getGenerator();
+            BigInteger[] wCoords = EcCore.multiplyPointA(new BigInteger[]{generator.getAffineX(), generator.getAffineY()}, ecPriv.getS(), params2);
+            return kf.generatePublic(new ECPublicKeySpec(new ECPoint(wCoords[0], wCoords[1]), params2));
+        } else {
+            throw new NoSuchAlgorithmException("Key type must be RSA, DSA, or EC");
+        }
+    }

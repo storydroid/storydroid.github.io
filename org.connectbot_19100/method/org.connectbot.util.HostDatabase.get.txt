@@ -1,0 +1,12 @@
+    public static HostDatabase get(Context context) {
+        HostDatabase hostDatabase;
+        synchronized (sInstanceLock) {
+            if (sInstance != null) {
+                hostDatabase = sInstance;
+            } else {
+                sInstance = new HostDatabase(context.getApplicationContext());
+                hostDatabase = sInstance;
+            }
+        }
+        return hostDatabase;
+    }

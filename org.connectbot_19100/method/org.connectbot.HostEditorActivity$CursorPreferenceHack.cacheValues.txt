@@ -1,0 +1,4 @@
+                    CursorPreferenceHack.this.cacheValues();
+                    for (OnSharedPreferenceChangeListener listener : CursorPreferenceHack.this.listeners) {
+                        listener.onSharedPreferenceChanged(CursorPreferenceHack.this, null);
+                    }

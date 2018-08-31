@@ -1,0 +1,3 @@
+        public void hideRunningNotification(Service context) {
+            context.stopForeground(true);
+        }

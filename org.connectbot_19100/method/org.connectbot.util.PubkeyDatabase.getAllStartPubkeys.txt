@@ -1,0 +1,3 @@
+    public List<PubkeyBean> getAllStartPubkeys() {
+        return getPubkeys("startup = 1 AND encrypted = 0", null);
+    }

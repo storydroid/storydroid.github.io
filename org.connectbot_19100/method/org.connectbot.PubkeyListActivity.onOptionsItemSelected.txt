@@ -1,0 +1,12 @@
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.add_new_key_icon:
+                startActivity(new Intent(this, GeneratePubkeyActivity.class));
+                return true;
+            case R.id.import_existing_key_icon:
+                importExistingKey();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }

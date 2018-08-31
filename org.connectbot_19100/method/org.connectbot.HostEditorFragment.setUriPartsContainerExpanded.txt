@@ -1,0 +1,10 @@
+    private void setUriPartsContainerExpanded(boolean expanded) {
+        this.mIsUriEditorExpanded = expanded;
+        if (this.mIsUriEditorExpanded) {
+            this.mExpandCollapseButton.setImageResource(R.drawable.ic_expand_less);
+            this.mUriPartsContainer.setVisibility(0);
+            return;
+        }
+        this.mExpandCollapseButton.setImageResource(R.drawable.ic_expand_more);
+        this.mUriPartsContainer.setVisibility(8);
+    }

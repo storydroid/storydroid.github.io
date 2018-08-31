@@ -1,0 +1,5 @@
+    public static Intent createIntentForExistingHost(Context context, long existingHostId) {
+        Intent i = new Intent(context, EditHostActivity.class);
+        i.putExtra("org.connectbot.existing_host_id", existingHostId);
+        return i;
+    }

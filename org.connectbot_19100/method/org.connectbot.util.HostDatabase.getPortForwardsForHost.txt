@@ -1,0 +1,11 @@
+    public List<PortForwardBean> getPortForwardsForHost(HostBean host) {
+        List<PortForwardBean> portForwards = new LinkedList();
+        if (host != null) {
+            Cursor c = this.mDb.query("portforwards", new String[]{"_id", "nickname", "type", "sourceport", "destaddr", "destport"}, "hostid = ?", new String[]{String.valueOf(host.getId())}, null, null, null);
+            while (c.moveToNext()) {
+                portForwards.add(new PortForwardBean((long) c.getInt(0), host.getId(), c.getString(1), c.getString(2), c.getInt(3), c.getString(4), c.getInt(5)));
+            }
+            c.close();
+        }
+        return portForwards;
+    }

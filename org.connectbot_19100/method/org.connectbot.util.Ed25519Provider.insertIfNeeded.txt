@@ -1,0 +1,8 @@
+    public static void insertIfNeeded() {
+        synchronized (sInitLock) {
+            if (!sInitialized) {
+                Security.addProvider(new Ed25519Provider());
+                sInitialized = true;
+            }
+        }
+    }

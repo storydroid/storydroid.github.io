@@ -1,0 +1,23 @@
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuItem reset = menu.add(R.string.menu_colors_reset);
+        reset.setAlphabeticShortcut('r');
+        reset.setNumericShortcut('1');
+        reset.setIcon(17301580);
+        reset.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem arg0) {
+                for (int i = 0; i < Colors.defaults.length; i++) {
+                    if (ColorsActivity.this.mColorList[i] != Colors.defaults[i]) {
+                        ColorsActivity.this.mHostDb.setGlobalColor(i, Colors.defaults[i]);
+                        ColorsActivity.this.mColorList[i] = Colors.defaults[i];
+                    }
+                }
+                ColorsActivity.this.mColorGrid.invalidateViews();
+                ColorsActivity.this.mFgSpinner.setSelection(7);
+                ColorsActivity.this.mBgSpinner.setSelection(0);
+                ColorsActivity.this.mHostDb.setDefaultColorsForScheme(0, 7, 0);
+                return true;
+            }
+        });
+        return true;
+    }

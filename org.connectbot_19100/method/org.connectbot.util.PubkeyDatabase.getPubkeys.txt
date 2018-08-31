@@ -1,0 +1,30 @@
+    private List<PubkeyBean> getPubkeys(String selection, String[] selectionArgs) {
+        List<PubkeyBean> pubkeys = new LinkedList();
+        Cursor c = this.mDb.query("pubkeys", null, selection, selectionArgs, null, null, null);
+        if (c != null) {
+            int COL_ID = c.getColumnIndexOrThrow("_id");
+            int COL_NICKNAME = c.getColumnIndexOrThrow("nickname");
+            int COL_TYPE = c.getColumnIndexOrThrow("type");
+            int COL_PRIVATE = c.getColumnIndexOrThrow("private");
+            int COL_PUBLIC = c.getColumnIndexOrThrow("public");
+            int COL_ENCRYPTED = c.getColumnIndexOrThrow("encrypted");
+            int COL_STARTUP = c.getColumnIndexOrThrow("startup");
+            int COL_CONFIRMUSE = c.getColumnIndexOrThrow("confirmuse");
+            int COL_LIFETIME = c.getColumnIndexOrThrow("lifetime");
+            while (c.moveToNext()) {
+                PubkeyBean pubkey = new PubkeyBean();
+                pubkey.setId(c.getLong(COL_ID));
+                pubkey.setNickname(c.getString(COL_NICKNAME));
+                pubkey.setType(c.getString(COL_TYPE));
+                pubkey.setPrivateKey(c.getBlob(COL_PRIVATE));
+                pubkey.setPublicKey(c.getBlob(COL_PUBLIC));
+                pubkey.setEncrypted(c.getInt(COL_ENCRYPTED) > 0);
+                pubkey.setStartup(c.getInt(COL_STARTUP) > 0);
+                pubkey.setConfirmUse(c.getInt(COL_CONFIRMUSE) > 0);
+                pubkey.setLifetime(c.getInt(COL_LIFETIME));
+                pubkeys.add(pubkey);
+            }
+            c.close();
+        }
+        return pubkeys;
+    }

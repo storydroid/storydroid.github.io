@@ -1,0 +1,7 @@
+    public boolean removeKey(String nickname) {
+        Log.d("CB.TerminalManager", String.format("Removed key '%s' to in-memory cache", new Object[]{nickname}));
+        if (this.loadedKeypairs.remove(nickname) != null) {
+            return true;
+        }
+        return false;
+    }

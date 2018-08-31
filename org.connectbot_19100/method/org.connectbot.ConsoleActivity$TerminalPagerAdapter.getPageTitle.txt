@@ -1,0 +1,7 @@
+        public CharSequence getPageTitle(int position) {
+            TerminalBridge bridge = getBridgeAtPosition(position);
+            if (bridge == null) {
+                return "???";
+            }
+            return bridge.host.getNickname();
+        }

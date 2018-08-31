@@ -1,0 +1,26 @@
+    public void onReceive(Context context, Intent intent) {
+        boolean z = false;
+        if (intent.getAction().equals("android.net.conn.CONNECTIVITY_CHANGE")) {
+            boolean noConnectivity = intent.getBooleanExtra("noConnectivity", false);
+            boolean isFailover = intent.getBooleanExtra("isFailover", false);
+            Log.d("CB.ConnectivityManager", "onReceived() called; noConnectivity? " + noConnectivity + "; isFailover? " + isFailover);
+            if (noConnectivity && !isFailover && this.mIsConnected) {
+                this.mIsConnected = false;
+                this.mTerminalManager.onConnectivityLost();
+                return;
+            } else if (!this.mIsConnected) {
+                if (((NetworkInfo) intent.getExtras().get("networkInfo")).getState() == State.CONNECTED) {
+                    z = true;
+                }
+                this.mIsConnected = z;
+                if (z) {
+                    this.mTerminalManager.onConnectivityRestored();
+                    return;
+                }
+                return;
+            } else {
+                return;
+            }
+        }
+        Log.w("CB.ConnectivityManager", "onReceived() called: " + intent);
+    }

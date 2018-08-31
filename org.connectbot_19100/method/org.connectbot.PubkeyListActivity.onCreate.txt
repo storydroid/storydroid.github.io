@@ -1,0 +1,12 @@
+    public void onCreate(Bundle icicle) {
+        super.onCreate(icicle);
+        setContentView((int) R.layout.act_pubkeylist);
+        this.mListView = (RecyclerView) findViewById(R.id.list);
+        this.mListView.setHasFixedSize(true);
+        this.mListView.setLayoutManager(new LinearLayoutManager(this));
+        this.mListView.addItemDecoration(new ListItemDecoration(this));
+        this.mEmptyView = findViewById(R.id.empty);
+        registerForContextMenu(this.mListView);
+        this.clipboard = (ClipboardManager) getSystemService("clipboard");
+        this.inflater = LayoutInflater.from(this);
+    }

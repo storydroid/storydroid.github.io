@@ -1,0 +1,4 @@
+            public void onClick(View view) {
+                GeneratePubkeyActivity.this.save.setEnabled(false);
+                GeneratePubkeyActivity.this.startEntropyGather();
+            }

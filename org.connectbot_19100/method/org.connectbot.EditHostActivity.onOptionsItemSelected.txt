@@ -1,0 +1,10 @@
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case 16908332:
+            case R.id.save:
+                attemptSaveAndExit();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }

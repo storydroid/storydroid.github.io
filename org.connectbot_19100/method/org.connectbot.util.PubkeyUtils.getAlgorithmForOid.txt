@@ -1,0 +1,12 @@
+    static String getAlgorithmForOid(String oid) throws NoSuchAlgorithmException {
+        if ("1.2.840.10045.2.1".equals(oid)) {
+            return "EC";
+        }
+        if ("1.2.840.113549.1.1.1".equals(oid)) {
+            return "RSA";
+        }
+        if ("1.2.840.10040.4.1".equals(oid)) {
+            return "DSA";
+        }
+        throw new NoSuchAlgorithmException("Unknown algorithm OID " + oid);
+    }

@@ -1,0 +1,7 @@
+    public void setPrivateKey(byte[] privateKey) {
+        if (privateKey == null) {
+            this.privateKey = null;
+        } else {
+            this.privateKey = (byte[]) privateKey.clone();
+        }
+    }

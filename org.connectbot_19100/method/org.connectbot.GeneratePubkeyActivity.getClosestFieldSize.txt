@@ -1,0 +1,2 @@
+            this.bits = getClosestFieldSize(newBits);
+        } else {

@@ -1,0 +1,24 @@
+    public static Uri getUri(String input) {
+        Matcher matcher = hostmask.matcher(input);
+        if (!matcher.matches()) {
+            return null;
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append("ssh").append("://").append(Uri.encode(matcher.group(1))).append('@').append(Uri.encode(matcher.group(2)));
+        String portString = matcher.group(6);
+        int port = 22;
+        if (portString != null) {
+            try {
+                port = Integer.parseInt(portString);
+                if (port < 1 || port > 65535) {
+                    port = 22;
+                }
+            } catch (NumberFormatException e) {
+            }
+        }
+        if (port != 22) {
+            sb.append(':').append(port);
+        }
+        sb.append("/#").append(Uri.encode(input));
+        return Uri.parse(sb.toString());
+    }

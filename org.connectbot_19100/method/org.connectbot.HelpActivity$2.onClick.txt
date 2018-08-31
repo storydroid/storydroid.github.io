@@ -1,0 +1,3 @@
+            public void onClick(View v) {
+                HelpActivity.this.startActivity(new Intent(HelpActivity.this, HintsActivity.class));
+            }

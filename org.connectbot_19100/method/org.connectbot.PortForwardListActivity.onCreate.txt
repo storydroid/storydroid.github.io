@@ -1,0 +1,86 @@
+    public void onCreate(Bundle icicle) {
+        super.onCreate(icicle);
+        long hostId = getIntent().getLongExtra("android.intent.extra.TITLE", -1);
+        setContentView((int) R.layout.act_portforwardlist);
+        this.mListView = (RecyclerView) findViewById(R.id.list);
+        this.mListView.setHasFixedSize(true);
+        this.mListView.setLayoutManager(new LinearLayoutManager(this));
+        this.mListView.addItemDecoration(new ListItemDecoration(this));
+        this.mEmptyView = findViewById(R.id.empty);
+        this.hostdb = HostDatabase.get(this);
+        this.host = this.hostdb.findHostById(hostId);
+        String nickname = this.host != null ? this.host.getNickname() : null;
+        Resources resources = getResources();
+        if (nickname != null) {
+            setTitle(String.format("%s (%s)", new Object[]{resources.getText(R.string.title_port_forwards_list), nickname}));
+        }
+        this.connection = new ServiceConnection() {
+            public void onServiceConnected(ComponentName className, IBinder service) {
+                TerminalManager bound = ((TerminalBinder) service).getService();
+                PortForwardListActivity.this.hostBridge = bound.getConnectedBridge(PortForwardListActivity.this.host);
+                PortForwardListActivity.this.updateHandler.sendEmptyMessage(-1);
+            }
+
+            public void onServiceDisconnected(ComponentName name) {
+                PortForwardListActivity.this.hostBridge = null;
+            }
+        };
+        updateList();
+        registerForContextMenu(this.mListView);
+        this.inflater = LayoutInflater.from(this);
+        ((FloatingActionButton) findViewById(R.id.add_port_forward_button)).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                final View portForwardView = View.inflate(PortForwardListActivity.this, R.layout.dia_portforward, null);
+                final EditText destEdit = (EditText) portForwardView.findViewById(R.id.portforward_destination);
+                final Spinner typeSpinner = (Spinner) portForwardView.findViewById(R.id.portforward_type);
+                typeSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                        destEdit.setEnabled(position != 2);
+                    }
+
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+                    }
+                });
+                new Builder(PortForwardListActivity.this, R.style.AlertDialogTheme).setView(portForwardView).setPositiveButton(R.string.portforward_pos, new OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            EditText nicknameEdit = (EditText) portForwardView.findViewById(R.id.nickname);
+                            EditText sourcePortEdit = (EditText) portForwardView.findViewById(R.id.portforward_source);
+                            String type = "local";
+                            switch (typeSpinner.getSelectedItemPosition()) {
+                                case 0:
+                                    type = "local";
+                                    break;
+                                case 1:
+                                    type = "remote";
+                                    break;
+                                case 2:
+                                    type = "dynamic5";
+                                    break;
+                            }
+                            String sourcePort = sourcePortEdit.getText().toString();
+                            if (sourcePort.length() == 0) {
+                                sourcePort = sourcePortEdit.getHint().toString();
+                            }
+                            String destination = destEdit.getText().toString();
+                            if (destination.length() == 0) {
+                                destination = destEdit.getHint().toString();
+                            }
+                            PortForwardBean portForward = new PortForwardBean(PortForwardListActivity.this.host != null ? PortForwardListActivity.this.host.getId() : -1, nicknameEdit.getText().toString(), type, sourcePort, destination);
+                            if (PortForwardListActivity.this.hostBridge != null) {
+                                PortForwardListActivity.this.hostBridge.addPortForward(portForward);
+                                PortForwardListActivity.this.hostBridge.enablePortForward(portForward);
+                            }
+                            if (PortForwardListActivity.this.host == null || PortForwardListActivity.this.hostdb.savePortForward(portForward)) {
+                                PortForwardListActivity.this.updateHandler.sendEmptyMessage(-1);
+                                return;
+                            }
+                            throw new SQLException("Could not save port forward");
+                        } catch (Exception e) {
+                            Log.e("CB.PortForwardListAct", "Could not update port forward", e);
+                        }
+                    }
+                }).setNegativeButton(R.string.delete_neg, null).create().show();
+            }
+        });
+    }

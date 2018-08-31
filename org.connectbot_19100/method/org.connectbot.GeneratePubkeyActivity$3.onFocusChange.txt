@@ -1,0 +1,11 @@
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    int newBits;
+                    try {
+                        newBits = Integer.parseInt(GeneratePubkeyActivity.this.bitsText.getText().toString());
+                    } catch (NumberFormatException e) {
+                        newBits = GeneratePubkeyActivity.this.keyType.defaultBits;
+                    }
+                    GeneratePubkeyActivity.this.setBits(newBits);
+                }
+            }

@@ -1,0 +1,4 @@
+        PublicKey pubKey = decodePublic(encoded, keyType);
+        if ("RSA".equals(keyType)) {
+            return ((RSAPublicKey) pubKey).getModulus().bitLength();
+        }

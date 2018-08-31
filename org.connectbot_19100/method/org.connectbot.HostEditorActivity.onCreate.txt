@@ -1,0 +1,41 @@
+    public void onCreate(Bundle icicle) {
+        super.onCreate(icicle);
+        long hostId = getIntent().getLongExtra("android.intent.extra.TITLE", -1);
+        this.hostdb = HostDatabase.get(this);
+        this.pubkeydb = PubkeyDatabase.get(this);
+        this.host = this.hostdb.findHostById(hostId);
+        this.connection = new ServiceConnection() {
+            public void onServiceConnected(ComponentName className, IBinder service) {
+                TerminalManager bound = ((TerminalBinder) service).getService();
+                HostEditorActivity.this.hostBridge = bound.getConnectedBridge(HostEditorActivity.this.host);
+            }
+
+            public void onServiceDisconnected(ComponentName name) {
+                HostEditorActivity.this.hostBridge = null;
+            }
+        };
+        this.pref = new CursorPreferenceHack("hosts", hostId);
+        this.pref.registerOnSharedPreferenceChangeListener(this);
+        addPreferencesFromResource(R.xml.host_prefs);
+        ListPreference pubkeyPref = (ListPreference) findPreference("pubkeyid");
+        List<CharSequence> pubkeyNicks = new LinkedList(Arrays.asList(pubkeyPref.getEntries()));
+        pubkeyNicks.addAll(this.pubkeydb.allValues("nickname"));
+        pubkeyPref.setEntries((CharSequence[]) pubkeyNicks.toArray(new CharSequence[pubkeyNicks.size()]));
+        List<CharSequence> pubkeyIds = new LinkedList(Arrays.asList(pubkeyPref.getEntryValues()));
+        pubkeyIds.addAll(this.pubkeydb.allValues("_id"));
+        pubkeyPref.setEntryValues((CharSequence[]) pubkeyIds.toArray(new CharSequence[pubkeyIds.size()]));
+        final ListPreference charsetPref = (ListPreference) findPreference("encoding");
+        if (CharsetHolder.isInitialized()) {
+            initCharsetPref(charsetPref);
+        } else {
+            String[] currentCharsetPref = new String[]{charsetPref.getValue()};
+            charsetPref.setEntryValues(currentCharsetPref);
+            charsetPref.setEntries(currentCharsetPref);
+            new Thread(new Runnable() {
+                public void run() {
+                    HostEditorActivity.this.initCharsetPref(charsetPref);
+                }
+            }).start();
+        }
+        updateSummaries();
+    }

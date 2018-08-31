@@ -1,0 +1,23 @@
+    static BigInteger getRSAPublicExponentFromPkcs8Encoded(byte[] encoded) throws InvalidKeySpecException {
+        if (encoded == null) {
+            throw new InvalidKeySpecException("encoded key is null");
+        }
+        try {
+            SimpleDERReader reader = new SimpleDERReader(encoded);
+            reader.resetInput(reader.readSequenceAsByteArray());
+            if (reader.readInt().equals(BigInteger.ZERO)) {
+                reader.readSequenceAsByteArray();
+                reader.resetInput(reader.readOctetString());
+                reader.resetInput(reader.readSequenceAsByteArray());
+                if (reader.readInt().equals(BigInteger.ZERO)) {
+                    reader.readInt();
+                    return reader.readInt();
+                }
+                throw new InvalidKeySpecException("RSA key is not version 0");
+            }
+            throw new InvalidKeySpecException("PKCS#8 is not version 0");
+        } catch (IOException e) {
+            Log.w("CB.PubkeyUtils", "Could not read public exponent", e);
+            throw new InvalidKeySpecException("Could not read key", e);
+        }
+    }

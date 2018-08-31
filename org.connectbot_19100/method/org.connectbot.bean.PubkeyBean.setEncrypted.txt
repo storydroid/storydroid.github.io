@@ -1,0 +1,3 @@
+    public void setEncrypted(boolean encrypted) {
+        this.encrypted = encrypted;
+    }

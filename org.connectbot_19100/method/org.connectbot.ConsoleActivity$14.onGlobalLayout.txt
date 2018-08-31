@@ -1,0 +1,12 @@
+            public void onGlobalLayout() {
+                Rect r = new Rect();
+                ConsoleActivity.this.contentView.getWindowVisibleDisplayFrame(r);
+                int screenHeight = ConsoleActivity.this.contentView.getRootView().getHeight();
+                if (((double) (screenHeight - r.bottom)) > ((double) screenHeight) * 0.15d) {
+                    ConsoleActivity.this.mKeyboardButton.setImageResource(R.drawable.ic_keyboard_hide);
+                    ConsoleActivity.this.mKeyboardButton.setContentDescription(ConsoleActivity.this.getResources().getText(R.string.image_description_hide_keyboard));
+                    return;
+                }
+                ConsoleActivity.this.mKeyboardButton.setImageResource(R.drawable.ic_keyboard);
+                ConsoleActivity.this.mKeyboardButton.setContentDescription(ConsoleActivity.this.getResources().getText(R.string.image_description_show_keyboard));
+            }

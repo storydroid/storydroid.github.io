@@ -1,0 +1,3 @@
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromTouch) {
+                GeneratePubkeyActivity.this.setBits(GeneratePubkeyActivity.this.keyType.minimumBits + progress);
+            }

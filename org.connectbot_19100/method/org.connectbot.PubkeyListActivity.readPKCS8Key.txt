@@ -1,0 +1,25 @@
+    private KeyPair readPKCS8Key(byte[] keyData) {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(keyData)));
+        try {
+            ByteArrayOutputStream keyBytes = new ByteArrayOutputStream();
+            boolean inKey = false;
+            while (true) {
+                String line = reader.readLine();
+                if (line == null) {
+                    break;
+                } else if (line.equals("-----BEGIN PRIVATE KEY-----")) {
+                    inKey = true;
+                } else if (line.equals("-----END PRIVATE KEY-----")) {
+                    break;
+                } else if (inKey) {
+                    keyBytes.write(line.getBytes("US-ASCII"));
+                }
+            }
+            if (keyBytes.size() > 0) {
+                return PubkeyUtils.recoverKeyPair(Base64.decode(keyBytes.toString().toCharArray()));
+            }
+            return null;
+        } catch (Exception e) {
+            return null;
+        }
+    }

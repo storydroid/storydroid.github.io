@@ -1,0 +1,22 @@
+    protected void adjustViewVisibility() {
+        boolean isEmpty;
+        int i;
+        int i2 = 0;
+        if (this.mAdapter.getItemCount() == 0) {
+            isEmpty = true;
+        } else {
+            isEmpty = false;
+        }
+        RecyclerView recyclerView = this.mListView;
+        if (isEmpty) {
+            i = 8;
+        } else {
+            i = 0;
+        }
+        recyclerView.setVisibility(i);
+        View view = this.mEmptyView;
+        if (!isEmpty) {
+            i2 = 8;
+        }
+        view.setVisibility(i2);
+    }

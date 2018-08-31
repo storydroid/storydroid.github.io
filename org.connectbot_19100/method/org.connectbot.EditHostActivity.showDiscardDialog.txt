@@ -1,0 +1,12 @@
+    private void showDiscardDialog() {
+        Builder builder = new Builder(this, R.style.AlertDialogTheme);
+        builder.setMessage((int) R.string.discard_host_changes_message).setPositiveButton(R.string.discard_host_button, new OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                EditHostActivity.this.finish();
+            }
+        }).setNegativeButton(R.string.discard_host_cancel_button, new OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        builder.show();
+    }

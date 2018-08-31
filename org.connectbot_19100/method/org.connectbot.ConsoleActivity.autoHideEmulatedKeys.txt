@@ -1,0 +1,18 @@
+    private void autoHideEmulatedKeys() {
+        if (this.keyboardGroupHider != null) {
+            this.handler.removeCallbacks(this.keyboardGroupHider);
+        }
+        this.keyboardGroupHider = new Runnable() {
+            public void run() {
+                if (ConsoleActivity.this.keyboardGroup.getVisibility() != 8 && !ConsoleActivity.this.inActionBarMenu) {
+                    if (!ConsoleActivity.this.keyboardAlwaysVisible) {
+                        ConsoleActivity.this.keyboardGroup.startAnimation(ConsoleActivity.this.keyboard_fade_out);
+                        ConsoleActivity.this.keyboardGroup.setVisibility(8);
+                    }
+                    ConsoleActivity.this.hideActionBarIfRequested();
+                    ConsoleActivity.this.keyboardGroupHider = null;
+                }
+            }
+        };
+        this.handler.postDelayed(this.keyboardGroupHider, 3000);
+    }

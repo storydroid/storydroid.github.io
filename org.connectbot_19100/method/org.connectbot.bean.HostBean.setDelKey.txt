@@ -1,0 +1,3 @@
+    public void setDelKey(String delKey) {
+        this.delKey = delKey;
+    }

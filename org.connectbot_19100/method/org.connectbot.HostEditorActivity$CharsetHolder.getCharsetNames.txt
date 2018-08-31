@@ -1,0 +1,6 @@
+        public static CharSequence[] getCharsetNames() {
+            if (charsetNames == null) {
+                initialize();
+            }
+            return charsetNames;
+        }

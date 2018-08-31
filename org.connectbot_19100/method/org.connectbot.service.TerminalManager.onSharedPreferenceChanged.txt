@@ -1,0 +1,23 @@
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if ("bell".equals(key)) {
+            boolean wantAudible = sharedPreferences.getBoolean("bell", true);
+            if (wantAudible && this.mediaPlayer == null) {
+                enableMediaPlayer();
+            } else if (!wantAudible && this.mediaPlayer != null) {
+                disableMediaPlayer();
+            }
+        } else if ("bellVolume".equals(key)) {
+            if (this.mediaPlayer != null) {
+                float volume = sharedPreferences.getFloat("bellVolume", 0.25f);
+                this.mediaPlayer.setVolume(volume, volume);
+            }
+        } else if ("bellVibrate".equals(key)) {
+            this.wantBellVibration = sharedPreferences.getBoolean("bellVibrate", true);
+        } else if ("bumpyarrows".equals(key)) {
+            this.wantKeyVibration = sharedPreferences.getBoolean("bumpyarrows", true);
+        } else if ("wifilock".equals(key)) {
+            this.connectivityManager.setWantWifiLock(this.prefs.getBoolean("wifilock", true));
+        } else if ("memkeys".equals(key)) {
+            updateSavingKeys();
+        }
+    }
