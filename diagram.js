@@ -21,7 +21,7 @@ links.forEach(function (link) {
 var wholeCode = document.getElementById("one_pre");
 var methodCode = document.getElementById("two_pre");
 
-var width = 800,
+var width = 725,
     height = 700;
 
 var force = d3.layout.force()
@@ -109,9 +109,8 @@ var image = svg.append("g").selectAll("image")
             });
         }
 
-
-        var width = 800,
-            height = 500;
+        var width = 525,
+            height = 700;
         var methodForce = d3.layout.force()
             .nodes(d3.values(method_nodes))
             .links(dummy_links)
@@ -192,8 +191,6 @@ var image = svg.append("g").selectAll("image")
         .text(function (d) {
             return d.name;
     });
-
-
 
 // Use elliptical arc path segments to doubly-encode directionality.
 function tick() {

@@ -62,7 +62,6 @@
          font-size: 12px;
          margin-left: 0px;
          font-weight: normal;
-         width: 490px;
      }
      
      h3 {
@@ -105,3 +104,23 @@
         width: 150px;
         height: 200px;
     }
+
+    *{margin:0;     padding:0;} 
+     
+    #wrap{
+     
+           width:98%; 
+     
+           height:100%; 
+     
+           clear:both;     
+     
+           margin:0 auto; 
+     
+           background:#FFF url(background.gif) repeat; 
+     
+    } 
+     
+    #left { float:left; width:55%; } 
+     
+    #right { float:right;    width:40%; } 
